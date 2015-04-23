@@ -14,6 +14,16 @@
         "7"
       ]
     },{
+      "operatingsystem": "OracleLinux",
+      "operatingsystemrelease": [
+        "7"
+      ]
+    },{
+      "operatingsystem": "Scientific",
+      "operatingsystemrelease": [
+        "7"
+      ]
+    },{
       "operatingsystem": "CentOS",
       "operatingsystemrelease": [
         "7"

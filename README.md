@@ -32,9 +32,9 @@ For RHEL and CentOS systems, a few issues might prevent Docker from starting pro
 
 To install Docker on a node, include the class `docker`.
 
-```puppet
+~~~
 include 'docker'
-```
+~~~
 
 By default, for CentOS/RHEL, this installs Docker from your operating system's repo. For Ubuntu, this installs Docker from the upstream Docker repository.
 
@@ -60,32 +60,32 @@ This example installs Docker version 0.5.5, binds the Docker daemon to a Unix so
 
 To install a Docker image, use the define [`docker::image`](#dockerimage):
 
-```puppet
+~~~
 docker::image { 'base': }
-```
-This is equivalent to running `docker pull base`. This downloads a large binary, so on first run, it can take a while. For that reason this define turns off the default five-minute timeout for exec. 
+~~~
+
+This is equivalent to running `docker pull base`. This downloads a large binary, so on first run, it can take a while. For that reason, this define turns off the default five-minute timeout for exec. 
 
 ~~~
 docker::image { 'ubuntu':
   ensure => 'present'
   image_tag => 'precise',
   docker_file => '/tmp/Dockerfile',
-  docker_dir => '/tmp/ubuntu_image',
 }
 ~~~
 
-The above code adds an image from the listed Dockerfile and directory. [TODO: I feel like I'm missing a big chunk here of what this code actually does.]
+The above code adds an image from the listed Dockerfile. Alternatively, you can specify an image from a Docker directory, by using `docker_dir` parameter instead of `docker_file`:
 
 ### Containers
 
 Now that you have an image, you can run commands within a container managed by Docker:
 
-```puppet
+~~~
 docker::run { 'helloworld':
   image   => 'base',
   command => '/bin/sh -c "while true; do echo hello world; sleep 1; done"',
 }
-```
+~~~
 
 You can set ports, expose, env, dns, and volumes either a single string or as above with an array of values.
 
@@ -97,41 +97,41 @@ The service file created for systemd and upstart based systems enables automatic
 
 To use an image tag just append the tag name to the image name separated by a semicolon:
 
-```puppet
+~~~
 docker::run { 'helloworld':
   image   => 'ubuntu:precise',
   command => '/bin/sh -c "while true; do echo hello world; sleep 1; done"',
 }
-```
+~~~
 
 If using Hiera, there's a `docker::run_instance` class you can configure, for example:
 
-```yaml
+~~~
 docker::run_instance:
   helloworld:
     image: 'ubuntu:precise'
     command: '/bin/sh -c "while true; do echo hello world; sleep 1; done"'
-```
+~~~
 
 ### Exec
 
 You can also run arbitrary comments within the context of a running container:
 
-```puppet
+~~~
 docker::exec { 'helloworld-uptime':
   detach    => true,
   container => 'helloworld',
   command   => 'uptime',
   tty       => true,
 }
-```
+~~~
 
 ### Full Basic Example
 
 To install Docker, download a Ubuntu image, and run a Ubuntu-based container that does nothing except
 run the init process, you can use the following example manifest:
 
-```puppet
+~~~
 class { 'docker':}
 
 docker::image { 'ubuntu':
@@ -143,7 +143,7 @@ docker::run { 'test_1':
   command => 'init', 
   require => Docker::Image['ubuntu'],
 }
-```
+~~~
 
 ## Advanced Community Examples
 
@@ -165,11 +165,14 @@ Build a cluster of hosts running Docker Swarm configured by Puppet.
 
 ####docker
 
+Installs, configures, and manages your Docker installation.
+
 #####`use_upstream_package_source`
 
 Optional; applies to Ubuntu only. Whether the upstream package source should be used for installation. Valid values are 'true', 'false'. Defaults to 'true'.
 
 #####`tcp_bind`
+
 Optional. Specify the tcp socket the Docker daemon should bind to.
 
 #####`socket_bind`
@@ -188,18 +191,18 @@ Specify a dns server for the Docker daemon to connect to. This is useful if DNS 
 
 Add users to the Docker group. Accepts an array like:
 
-```puppet
+~~~
 class { 'docker':
   docker_users => [ 'user1', 'user2' ],
 }
-```
+~~~
 
 #####`ensure`
-Passed to the docker package. Defaults to present.
+Passed to the Docker package. Defaults to present.
 
 #####`prerequired_packages`
 
-An array of additional packages that need to be installed to support docker. Defaults change depending on the operating system.
+An array of additional packages that need to be installed to support Docker. Defaults change depending on the operating system.
 
 #####`tcp_bind`
 
@@ -211,7 +214,7 @@ The unix socket to bind to. Defaults to 'unix:///var/run/docker.sock'.
 
 #####`log_level`
 
-Set the logging level. Defaults to undef: docker defaults to info if no value specified. Valid values: debug, info, warn, error, fatal.
+Set the logging level. Defaults to undef: Docker defaults to 'info' if no value specified. Valid values: 'debug', 'info', 'warn', 'error', 'fatal'.
 
 #####`selinux_enabled`
 
@@ -227,7 +230,7 @@ The location of your upstream package source, if you're using one. Defaults to '
 
 #####`service_state`
 
-Whether you want to the Docker daemon to start up. Valid values: TODO. Defaults to 'running'.
+Whether you want to the Docker daemon to start up. Valid values: 'running', 'stopped'. Defaults to 'running'.
 
 #####`service_enable`
 
@@ -235,11 +238,11 @@ Whether you want to Docker daemon to start up at boot. Valid values: 'true', 'fa
 
 #####`root_dir`
 
-Custom root directory for containers. Valid values: TODO. Defaults to undefined.
+Custom root directory for containers. Valid values: a directory path. Defaults to undefined.
 
 #####`manage_kernel`
 
-Attempt to install the correct Kernel required by docker. Valid values: 'true', 'false'. Defaults to 'true'.
+Attempt to install the correct Kernel required by Docker. Valid values: 'true', 'false'. Defaults to 'true'.
 
 #####`dns`
 
@@ -251,11 +254,11 @@ Custom dns search domains. Defaults to undefined.
 
 #####`socket_group`
 
-Group ownership of the Unix control socket. Valid values: TODO. Defaults to undefined.
+Group ownership of the Unix control socket. Accepts a Unix user group. Defaults to undefined.
 
 #####`extra_parameters`
 
-Any extra parameters that should be passed to the Docker daemon. Valid values: TODO. Defaults to undefined.
+Any extra parameters that should be passed to the Docker daemon. Defaults to undefined.
 
 #####`shell_values`
 
@@ -275,11 +278,11 @@ Specify a storage driver to use. Default is undef: this lets Docker choose the c
 
 #####`dm_basesize`
 
-The size to use when creating the base device, which limits the size of images and containers. Valid values: TODO. Default value is 10G.
+The size to use when creating the base device, which limits the size of images and containers. Accepts a size such as 5G, 10G, 11G. Default value is 10G.
 
 #####`dm_fs`
 
-The filesystem to use for the base image (xfs or ext4). Valid values: TODO. Defaults to ext4.
+The filesystem to use for the base image. Valid values: 'xfs' or 'ext4'. Defaults to 'ext4'.
 
 #####`dm_mkfsarg`
 
@@ -313,13 +316,11 @@ A custom blockdevice to use for metadata for the thin pool.
 
 #####`manage_package`
 
-[TODO: I'm not sure what this does. The module won't install or define the package if you set this to true or false?]
-
-Won't install or define the Docker package, useful if you want to use your own package. Valid values: 'true', 'false'. Defaults to 'true'.
+Whether to manage the package. If set to 'false',the module doesn't define or install the package. Useful if you want to use your own package. Valid values: 'true', 'false'. Defaults to 'true'.
 
 #####`package_name`
 
-Specify custom package name. Default is set on a per system basis in `docker::params`. [TODO: what is docker::params? A define?]
+Specify custom package name. Default is set on a per system basis.
 
 #####`service_name`
 
@@ -327,7 +328,7 @@ Specify custom service name. Default is set on a per system basis in `docker::pa
 
 #####`docker_command`
 
-Specify a custom docker command name. Default is set on a per system basis in `docker::params`.
+Specify a custom Docker command name. Default is set on a per system basis.
 
 #####`docker_users`
 
@@ -339,7 +340,7 @@ This class is for using Hiera for image management. You can use the same paramet
 
 ####`docker::run_instance`
 
-[TODO: does this work like the images class above with Hiera? Is this something that's passed to `docker::run`.
+This class is for using Hiera for instance management. You can use the same parameters as the `docker::run` define, and those values will be passed through from Hiera into the `docker::image` define.
 
 
 ###Defines
@@ -352,16 +353,16 @@ This is equivalent to running `docker pull base`. This is downloading a large bi
 
 #####`image_tag`
 
-Optional. Installs image tags. Equivalent to running `docker pull -t="precise" ubuntu`
+Optional. Installs image tags. Equivalent to running `docker pull -t="precise" ubuntu`.
 
 Note: images will only install if an image of that name does not already exist.
 
 #####`docker_file`
-Optional. Add images from a Dockerfile. Accepts a path to the Dockerfile.
+Optional. Add images from a Dockerfile. Cannot be used with the `docker_dir` parameter. Accepts a path to the Dockerfile.
 
 #####`docker_dir`
 
-Add images from a directory containing a Dockerfile with the `docker_dir` property. Accepts a path to the images.
+Add images from a directory containing a Dockerfile with the `docker_dir` property. Cannot be used with the `docker_file` parameter. Accepts a path to the images.
 
 #####`ensure`
 
@@ -369,10 +370,6 @@ Specify whether the image should be present or absent. Valid values are 'present
 
 ####docker::run
   
-#####`use_name`
-
-Unsupported by Puppet I believe [TODO: So, can the user do anything with this?]
-
 #####`volumes_from`
 
 Used to mount a volume from another container on the current container.
@@ -387,35 +384,35 @@ Binds the containers to a specific CPU core on the host.
 
 #####`username`
 
-Runs the Docker conatainer as a paticular user on the host system.
+Runs the Docker container as a paticular user on the host system.
 
 #####`env`
 
-Allows the setting of envinronment variables within the container.
+Allows the setting of environment variables within the container.
   
 #####`dns`
 
-Sets a custom DNS server(s) for the containers
+Sets a custom DNS server for the containers.
   
 #####`restart_service`
 
-If set to true, this will restart the containers if any other properties change.
+If set to 'true', restarts the containers if any other properties change.
   
 #####`privileged`
 
-If set to true, the containers becomes a Docker "privledged container" (See Docker documentation for further details)
+If set to 'true', the containers become a Docker "privileged container". [See Docker documentation for further details.](TODO: link to relevant docs?)
   
 #####`pull_on_start`
 
-This will pull a fresh copy of the image from the upstream repo every time the container is started.
+This pulls a fresh copy of the image from the upstream repo every time the container is started. Valid values: 'true', 'false'. Default is 'TODO'.
 
 #####`depends`
 
-Allows expressing containers that must be started before. This affects the generation of the init.d/systemd script.
+Allows specifying containers that must be started first. This affects the generation of the init.d/systemd script. Valid values: 'true', 'false'. Defaults to 'false'.
 
 #####`image`
 
-The docker image to base this container off. Can also include a specific tag (e.g. ubuntu:latest).
+The Docker image to base this container off. Can also include a specific tag (e.g., `ubuntu:latest`).
 
 #####`command`
 
@@ -423,11 +420,11 @@ The command to run inside the container once it has been started.
 
 #####`ports`
 
-Can be used to bind a port or ports inside a container to a different port on the host. This can be used to access a service running inside a container outside of docker.
+Can be used to bind a port or ports inside a container to a different port on the host. This can be used to access a service running inside a container outside of Docker.
 
 #####`expose`
 
-The port or ports specified will be available for incoming connections on the respective container from other docker containers.
+The port or ports specified will be available for incoming connections on the respective container from other Docker containers.
 
 #####`hostname`
 
@@ -439,7 +436,7 @@ This property allows you to mount folders on your host system inside the respect
 
 #####`links`
 
-This property allows you to create docker links between multiple containers.
+This property allows you to create Docker links between multiple containers.
 
 #####`running`
 
@@ -483,27 +480,27 @@ RHEL7/CentOS requires at least version 1.02.93 of the device-mapper package to b
 
 You can install this package via Puppet using the following manifest:
 
-```puppet
+~~~
 package {'device-mapper':
   ensure => latest,
 }
-```
+~~~
 
-Remember to add the appropriate metaparameters (`before` or `require`) for your environment to ensure that device-mapper is installed before the docker class is executed.
+Remember to add the appropriate metaparameters (`before` or `require`) for your environment to ensure that device-mapper is installed before the `docker` class is executed.
 
 RHEL7 also has the above issue. 
 
-Additionally, RHEL7 needs the rhel7-extras repo enabled in order to install docker. You can install docker using the following example manifest:
+Additionally, RHEL7 needs the rhel7-extras repo enabled in order to install Docker. You can install Docker using the following example manifest:
 
-```puppet
+~~~
 package {'docker_rhel':
   name		        => 'docker',
   install_options => ['--enablerepo=rhel7-extras'],
   ensure          => latest,
 }
-```
+~~~
 
-Again, remember to add the appropriate metaparameters (before or require) for your environment to ensure that device-mapper is installed before the docker package is installed.
+Again, remember to add the appropriate metaparameters (before or require) for your environment to ensure that device-mapper is installed before the Docker package is installed.
 
 ##Development
 

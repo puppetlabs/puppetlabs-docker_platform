@@ -26,7 +26,7 @@ This module allows the implementation of the Docker container system across all 
 
 ###Setup requirements
 
-For RHEL and CentOS systems, a few issues might prevent Docker from starting properly. You can learn about these issues in the [Known Issues](#known-issues) section below.
+For Enterprise Linux 7 systems, a few issues might prevent Docker from starting properly. You can learn about these issues in the [Known Issues](#known-issues) section below.
 
 ###Beginning with docker_platform
 
@@ -400,11 +400,11 @@ If set to 'true', restarts the containers if any other properties change.
   
 #####`privileged`
 
-If set to 'true', the containers become a Docker "privileged container". [See Docker documentation for further details.](TODO: link to relevant docs?)
+If set to 'true', the containers become a Docker "privileged container". [See Docker documentation for further details.](https://docs.docker.com/reference/run/#runtime-privilege-linux-capabilities-and-lxc-configuration)
   
 #####`pull_on_start`
 
-This pulls a fresh copy of the image from the upstream repo every time the container is started. Valid values: 'true', 'false'. Default is 'TODO'.
+This pulls a fresh copy of the image from the upstream repo every time the container is started. Valid values: 'true', 'false'. Default is false.
 
 #####`depends`
 
@@ -474,9 +474,9 @@ This module is currently supported on:
 
 Depending on the initial state of your OS, you may run into issues which may mean that Docker fails to start properly.
 
-#### RHEL7 and CentOS 7
+#### Enterprise Linux 7
 
-RHEL7/CentOS requires at least version 1.02.93 of the device-mapper package to be installed in order for Docker's default configuration to work. This is only available on RHEL/CentOS 7.1+.
+EL7 (Red Hat/CentOS/Oracle/Scientific) requires at least version 1.02.93 of the device-mapper package to be installed in order for Docker's default configuration to work. This is only available on EL7.1+.
 
 You can install this package via Puppet using the following manifest:
 
@@ -487,20 +487,6 @@ package {'device-mapper':
 ~~~
 
 Remember to add the appropriate metaparameters (`before` or `require`) for your environment to ensure that device-mapper is installed before the `docker` class is executed.
-
-RHEL7 also has the above issue. 
-
-Additionally, RHEL7 needs the rhel7-extras repo enabled in order to install Docker. You can install Docker using the following example manifest:
-
-~~~
-package {'docker_rhel':
-  name		        => 'docker',
-  install_options => ['--enablerepo=rhel7-extras'],
-  ensure          => latest,
-}
-~~~
-
-Again, remember to add the appropriate metaparameters (before or require) for your environment to ensure that device-mapper is installed before the Docker package is installed.
 
 ##Development
 

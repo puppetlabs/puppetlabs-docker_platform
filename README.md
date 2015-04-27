@@ -369,6 +369,10 @@ Add images from a directory containing a Dockerfile with the `docker_dir` proper
 Specify whether the image should be present or absent. Valid values are 'present', 'absent'. Default is 'present'.
 
 ####docker::run
+
+#####`running`
+
+If set to false, this will ensure that the respective container is not running. If set to true, this will ensure that the container is running. This is similar to the ensure property in other Puppet modules.
   
 #####`volumes_from`
 
@@ -437,10 +441,6 @@ This property allows you to mount folders on your host system inside the respect
 #####`links`
 
 This property allows you to create Docker links between multiple containers.
-
-#####`running`
-
-If set to false, this will ensure that the respective container is not running. If set to true, this will ensure that the container is running.
   
 ####docker::exec
 
@@ -466,9 +466,11 @@ Allocate a pseudo-TTY
 
 This module is currently supported on:
 
-* Ubuntu 14.04
-* Red Hat Enterprise Linux 7.1
-* CentOS 7.1
+* Ubuntu 14.04 x86_64
+* Red Hat Enterprise Linux 7.1 x86_64
+* CentOS 7.1 x86_64
+* Oracle Linux 7.1 x86_64
+* Scientific Linux 7.1 x86_64
 
 ### Known Issues
 

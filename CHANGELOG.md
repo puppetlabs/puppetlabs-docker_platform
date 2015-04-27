@@ -1,4 +1,4 @@
-##2015-04-28 - Supported Release 1.0.0
+##2015-04-27 - Supported Release 1.0.0
 ###Summary
 
 The is the initial supported release of the puppetlabs-docker_platform module which is used to install, configure and manage the docker daemon, docker images and docker containers.

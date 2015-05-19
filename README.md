@@ -20,7 +20,7 @@ The Puppet docker_platform module installs, configures, and manages the [Docker]
 
 ##Description
 
-This module allows the implementation of the Docker container system across all Puppet-managed infrastructure. It allows the installation of the Docker daemon, as well as management of images and containers accross different nodesets. Additionally, commands running inside already running containers can be run if required.
+This module lets you use Puppet to implement the Docker container system across a Puppet-managed infrastructure. It includes classes and defines to install the Docker daemon, manage images and containers accross different nodesets, and run commands inside containers.
 
 ##Setup
 
@@ -115,7 +115,7 @@ docker::run_instance:
 
 ### Exec
 
-You can also run arbitrary comments within the context of a running container:
+You can also run arbitrary commands within the context of a running container:
 
 ~~~
 docker::exec { 'helloworld-uptime':
@@ -128,8 +128,7 @@ docker::exec { 'helloworld-uptime':
 
 ### Full Basic Example
 
-To install Docker, download a Ubuntu image, and run a Ubuntu-based container that does nothing except
-run the init process, you can use the following example manifest:
+To install Docker, download a Ubuntu image, and run a Ubuntu-based container that does nothing except run the init process, you can use the following example manifest:
 
 ~~~
 class { 'docker':}
@@ -163,302 +162,281 @@ Build a cluster of hosts running Docker Swarm configured by Puppet.
 
 ###Classes
 
-####docker
+####`docker`
 
 Installs, configures, and manages your Docker installation.
 
-#####`use_upstream_package_source`
+#####use_upstream_package_source
 
-Optional; applies to Ubuntu only. Whether the upstream package source should be used for installation. Valid values are 'true', 'false'. Defaults to 'true'.
+*Optional; applies to Ubuntu only.* Specifies whether the upstream package source should be used for installation. If you run your own package mirror, you can set this to 'false'. Valid options: 'true' and 'false'. Default: 'true'. 
 
-#####`tcp_bind`
+#####tcp_bind
 
-Optional. Specify the tcp socket the Docker daemon should bind to.
+*Optional.* Specifies the tcp socket the Docker daemon should bind to. 
 
-#####`socket_bind`
+#####socket_bind
 
-Optional. Specify the Unix socket the Docker daemon should bind to. By default the Docker daemon will bind to a Unix socket at `/var/run/docker.sock`.
+*Optional.* Specifies the Unix socket the Docker daemon should bind to. Default: if not specified, Docker uses `/var/run/docker.sock`. 
 
-#####`version`
+#####version
 
-Optional. Specify a version of Docker to use. Accepts a version number or 'latest'. Default is'0.5.5'.
+*Optional.* Specify a version of Docker to use. Valid options: a string containing a version number or 'latest'. Default: '0.5.5'. 
 
-#####`dns`
+#####dns
 
-Specify a dns server for the Docker daemon to connect to. This is useful if DNS resolution isn't working properly in the container. 
+*Optional.* Specifies a DNS server for the Docker daemon to connect to. This is useful if DNS resolution isn't working properly in the container. Default: undefined. 
 
-#####`docker_users` => [ 'user1', 'user2' ],
+#####docker_users
 
-Add users to the Docker group. Accepts an array like:
+Valid options: an array of usernames formatted as strings. For example:
 
 ~~~
 class { 'docker':
   docker_users => [ 'user1', 'user2' ],
 }
-~~~
+~~~ 
 
-#####`ensure`
-Passed to the Docker package. Defaults to present.
+#####ensure
 
-#####`prerequired_packages`
+*Optional.* Specifies the desired state of the Docker package; passed to Puppet's native `package` type. Default: 'present'. 
 
-An array of additional packages that need to be installed to support Docker. Defaults change depending on the operating system.
+#####prerequired_packages
 
-#####`tcp_bind`
+*Optional.* An array of additional packages that need to be installed to support Docker. Default: varies by operating system. 
 
-The tcp socket to bind to in the format 'tcp://127.0.0.1:4243' Defaults to undefined.
+#####log_level
 
-#####`socket_bind`
+*Optional.* Sets the logging level. Valid options: 'debug', 'info', 'warn', 'error', and 'fatal'. Default: undef. If not specified, Docker uses 'info'. 
 
-The unix socket to bind to. Defaults to 'unix:///var/run/docker.sock'.
+#####selinux_enabled
 
-#####`log_level`
+*Optional.* Specifies whether to enable selinux support. Note: SELinux does not  presently support the BTRFS storage driver. Valid options: 'true' and 'false'. Default: 'false'. 
 
-Set the logging level. Defaults to undef: Docker defaults to 'info' if no value specified. Valid values: 'debug', 'info', 'warn', 'error', 'fatal'.
+#####package_source_location
 
-#####`selinux_enabled`
+Specifies the location of your upstream package source, if you're using one. Default: on Debian: 'https://get.docker.io/ubuntu'. 
 
-Enable selinux support. Default is false. SELinux does not  presently support the BTRFS storage driver. Valid values: 'true', 'false'.
+#####service_state
 
-#####`use_upstream_package_source` 
+*Optional.* Specifies whether the Docker daemon should be running. Valid options: 'running' and 'stopped'. Default: 'running'. 
 
-Whether or not to use the upstream package source. If you run your own package mirror, you may set this to 'false'.
+#####service_enable
 
-#####`package_source_location`
+*Optional.* Specifies whether the Docker daemon should start up at boot. Valid options: 'true' and 'false'. Default: 'true'. 
 
-The location of your upstream package source, if you're using one. Defaults to 'https://get.docker.io/ubuntu' on Debian.
+#####root_dir
 
-#####`service_state`
+*Optional.* Specifies a custom root directory for Docker containers. Valid options: a string containing the path to a directory. Default: undefined. 
 
-Whether you want to the Docker daemon to start up. Valid values: 'running', 'stopped'. Defaults to 'running'.
+#####manage_kernel
 
-#####`service_enable`
+*Optional.* Specifies whether to attempt to install the correct Kernel per Docker's requirements. Valid options: 'true' and 'false'. Default: 'true'. 
 
-Whether you want to Docker daemon to start up at boot. Valid values: 'true', 'false'. Defaults to 'true'.
+#####dns_search
 
-#####`root_dir`
+*Optional.* Specifies one or more dns search domain for the Docker daemon to use. Default: undefined. 
 
-Custom root directory for containers. Valid values: a directory path. Defaults to undefined.
+#####socket_group
 
-#####`manage_kernel`
+*Optional.* Specifies the group ownership of the Unix control socket. Valid options: a string containing a a Unix user group. Default: undefined. 
 
-Attempt to install the correct Kernel required by Docker. Valid values: 'true', 'false'. Defaults to 'true'.
+#####extra_parameters
 
-#####`dns`
+*Optional.* Passes one or more extra parameters to the Docker daemon. Default: undefined. 
 
-Custom dns server address. Defaults to undefined.
+#####shell_values
 
-#####`dns_search`
+Passes one or more shell values into init script config files. 
 
-Custom dns search domains. Defaults to undefined.
+#####proxy
 
-#####`socket_group`
+Passes a value to the http_proxy and https_proxy env variables in `/etc/sysconfig/docker` (on RedHat and CentOS) or `/etc/default/docker` (on Debian). 
 
-Group ownership of the Unix control socket. Accepts a Unix user group. Defaults to undefined.
+#####no_proxy
 
-#####`extra_parameters`
+Passes a value to the no_proxy variable in `/etc/sysconfig/docker` (on RedHat and CentOS) or `/etc/default/docker` (on Debian). 
 
-Any extra parameters that should be passed to the Docker daemon. Defaults to undefined.
+#####storage_driver
 
-#####`shell_values`
+*Optional.* Specifies a storage driver. Valid options: 'aufs', 'devicemapper', 'btrfs', 'overlayfs', and 'vfs'. Default: undef. If not specified, Docker chooses a driver automatically. 
 
-Array of shell values to pass into init script config files.
+#####dm_basesize
 
-#####`proxy`
+*Optional.* Specifies a size for the base device, which limits the size of images and containers. Valid options: a string containing a size (e.g., '5G', '10G', '11G'). Default: '10G'. 
 
-Sets the http_proxy and https_proxy env variables in `/etc/sysconfig/docker` (Red Hat/CentOS) or `/etc/default/docker` (Debian).
+#####dm_fs
 
-#####`no_proxy`
+*Optional.* Specifies a filesystem for the base image. Valid options: 'xfs' and 'ext4'. Default: 'ext4'. 
 
-Sets the no_proxy variable in `/etc/sysconfig/docker` (Red Hat/CentOS) or `/etc/default/docker` (Debian).
+#####dm_mkfsarg
 
-#####`storage_driver`
+Specifies extra mkfs arguments for creating the base device. 
 
-Specify a storage driver to use. Default is undef: this lets Docker choose the correct driver. Valid values: 'aufs', 'devicemapper', 'btrfs', 'overlayfs', 'vfs'.
+#####dm_mountopt
 
-#####`dm_basesize`
+Specifies extra mount options for mounting thin devices. 
 
-The size to use when creating the base device, which limits the size of images and containers. Accepts a size such as 5G, 10G, 11G. Default value is 10G.
+#####dm_blocksize
 
-#####`dm_fs`
+*Optional.* Specifies a custom blocksize for the thin pool. Default: '64K'.
 
-The filesystem to use for the base image. Valid values: 'xfs' or 'ext4'. Defaults to 'ext4'.
+Warning: **DO NOT** change this parameter after the lvm devices have been initialized. 
 
-#####`dm_mkfsarg`
+#####dm_loopdatasize
 
-Specifies extra mkfs arguments to be used when creating the base device.
+*Optional.* Specifies the size of the loopback file for the "data" device used for the thin pool. Default: '2G'. 
 
-#####`dm_mountopt`
+#####dm_loopmetadatasize
 
-Specifies extra mount options used when mounting the thin devices.
+*Optional.* Specifies the size of the loopback file for the "metadata" device used for the thin pool. Default: '2G'. 
 
-#####`dm_blocksize`
+#####dm_datadev
 
-A custom blocksize to use for the thin pool. Default blocksize is 64K.
+Specifies a custom blockdevice to handle data for the thin pool. 
 
-Warning: **DO NOT** change this parameter after the lvm devices have been initialized.
+#####dm_metadatadev
 
-#####`dm_loopdatasize`
+Specifies a custom blockdevice to handle metadata for the thin pool. 
 
-Specifies the size to use when creating the loopback file for the "data" device which is used for the thin pool. Default size is 100G.
+#####manage_package
 
-#####`dm_loopmetadatasize`
+*Optional.* Specifies whether the docker module should manage the Docker package. If set to 'false', Puppet doesn't define or install the package. Useful if you want to use your own package. Valid options: 'true' and 'false'. Default: 'true'. 
 
-Specifies the size to use when creating the loopback file for the "metadata" device which is used for the thin pool. Default size is 2G.
+#####package_name
 
-#####`dm_datadev`
+*Optional.* Specifies a custom Docker package. Valid options: a string containing the name of the package to manage. 
 
-A custom blockdevice to use for data for the thin pool.
+#####service_name
 
-#####`dm_metadatadev`
+*Optional.* Specifies a custom Docker service. Valid options: a string containing the name of the service to manage. 
 
-A custom blockdevice to use for metadata for the thin pool.
+#####docker_command
 
-#####`manage_package`
-
-Whether to manage the package. If set to 'false',the module doesn't define or install the package. Useful if you want to use your own package. Valid values: 'true', 'false'. Defaults to 'true'.
-
-#####`package_name`
-
-Specify custom package name. Default is set on a per system basis.
-
-#####`service_name`
-
-Specify custom service name. Default is set on a per system basis in `docker::params`.
-
-#####`docker_command`
-
-Specify a custom Docker command name. Default is set on a per system basis.
-
-#####`docker_users`
-
-Specifies an array of users to add to the Docker group. Default is empty.
+Specifies a custom Docker command. 
 
 ####`docker::images`
 
-This class is for using Hiera for image management. You can use the same parameters as the `docker::image` define, and those values will be passed through from Hiera into the `docker::image` define.
+This class lets you use Hiera for image management. It accepts the same parameters as the `docker::image` define, and passes their values from Hiera into the `docker::image` define.
 
 ####`docker::run_instance`
 
-This class is for using Hiera for instance management. You can use the same parameters as the `docker::run` define, and those values will be passed through from Hiera into the `docker::image` define.
-
+This class lets you use Hiera for instance management. It accepts the same parameters as the `docker::run` define, and passes their values from Hiera into the `docker::run` define.
 
 ###Defines
 
-####docker::image
+####`docker::image`
 
-#####`base`
+#####base
 
-This is equivalent to running `docker pull base`. This is downloading a large binary so on first run can take a while. For that reason this define turns off the default 5 minute timeout for exec. Takes an optional parameter for installing image tags that is the equivalent to running `docker pull -t="precise" ubuntu`:
+Pulls the base container image from the Docker Hub registry. This is equivalent to running `docker pull base`, which involves downloading a large binary. That can take awhile, so this define turns off the `exec` resource's default 5-minute timeout. 
 
-#####`image_tag`
+#####image_tag
 
-Optional. Installs image tags. Equivalent to running `docker pull -t="precise" ubuntu`.
+*Optional.* Installs image tags. Equivalent to running `docker pull -t="precise" ubuntu`. 
 
-Note: images will only install if an image of that name does not already exist.
+#####docker_file
 
-#####`docker_file`
-Optional. Add images from a Dockerfile. Cannot be used with the `docker_dir` parameter. Accepts a path to the Dockerfile.
+*Optional.* Optional. Adds images from a Dockerfile. Cannot be used with the `docker_dir` parameter. Valid options: a string containing an absolute path to the Dockerfile. 
 
-#####`docker_dir`
+#####docker_dir
 
-Add images from a directory containing a Dockerfile with the `docker_dir` property. Cannot be used with the `docker_file` parameter. Accepts a path to the images.
+Optional. Adds images from a directory containing a Dockerfile with the `docker_dir` property. Cannot be used with the `docker_dir` parameter. Valid options: a string containing an absolute path to the directory. 
 
-#####`ensure`
+#####ensure
 
-Specify whether the image should be present or absent. Valid values are 'present', 'absent'. Default is 'present'.
+*Optional.* Specifies whether the image should exist. Valid options: 'present' and 'absent'. Default: 'present'. 
 
-####docker::run
+####`docker::run`
 
-#####`running`
+#####running
 
-If set to false, this will ensure that the respective container is not running. If set to true, this will ensure that the container is running. This is similar to the ensure property in other Puppet modules.
-  
-#####`volumes_from`
+Specifies whether the container should be running. Valid options: 'true' and 'false'. 
 
-Used to mount a volume from another container on the current container.
+#####volumes_from
 
-#####`memory_limit`
+Mounts a volume from another container on the current container. 
 
-Specifies the memory limit for the container.
+#####memory_limit
 
-#####`cpuset`
+Specifies the memory limit for the container. 
 
-Binds the containers to a specific CPU core on the host.
+#####cpuset
 
-#####`username`
+Binds the containers to a specific CPU core on the host. 
 
-Runs the Docker container as a paticular user on the host system.
+#####username
 
-#####`env`
+Runs the Docker container as a paticular user on the host system. 
 
-Allows the setting of environment variables within the container.
-  
-#####`dns`
+#####env
 
-Sets a custom DNS server for the containers.
-  
-#####`restart_service`
+Lets you set environment variables within the container. 
 
-If set to 'true', restarts the containers if any other properties change.
-  
-#####`privileged`
+#####dns
 
-If set to 'true', the containers become a Docker "privileged container". [See Docker documentation for further details.](https://docs.docker.com/reference/run/#runtime-privilege-linux-capabilities-and-lxc-configuration)
-  
-#####`pull_on_start`
+Specifies a DNS server for the Docker daemon to connect to. This is useful if DNS resolution isn't working properly in the container. 
 
-This pulls a fresh copy of the image from the upstream repo every time the container is started. Valid values: 'true', 'false'. Default is false.
+#####restart_service
 
-#####`depends`
+Specifies whether to restart the containers if any other properties change. Valid options: 'true' and 'false'. 
 
-Allows specifying containers that must be started first. This affects the generation of the init.d/systemd script. Valid values: 'true', 'false'. Defaults to 'false'.
+#####privileged
 
-#####`image`
+Specifies whether to make the containers a Docker "privileged container". For further details, see the [Docker documentation](https://docs.docker.com/reference/run/#runtime-privilege-linux-capabilities-and-lxc-configuration). 
 
-The Docker image to base this container off. Can also include a specific tag (e.g., `ubuntu:latest`).
+#####pull_on_start
 
-#####`command`
+*Optional.* Specifies whether to pull a fresh copy of the image from the upstream repository every time the container starts up. Valid options: 'true' and 'false'. Default: 'false'. 
 
-The command to run inside the container once it has been started.
+#####depends
 
-#####`ports`
+Specifies containers that must be started before this one. 
 
-Can be used to bind a port or ports inside a container to a different port on the host. This can be used to access a service running inside a container outside of Docker.
+#####image
 
-#####`expose`
+Specifies a Docker image on which to base this container. You can also include a specific tag (e.g., `ubuntu:latest`). 
 
-The port or ports specified will be available for incoming connections on the respective container from other Docker containers.
+#####command
 
-#####`hostname`
+Specifies a command to run inside the container once it has been started. 
 
-This property will set the hostname inside the respective container.
+#####ports
 
-#####`volumes`
+Binds one or more ports inside the container to a different port on the host. This lets you access a service running inside a container from outside of Docker. 
 
-This property allows you to mount folders on your host system inside the respective container.
+#####expose
 
-#####`links`
+Specifies whether the port(s) specified in the `ports` parameter should be available for incoming connections on the respective container from other Docker containers. 
 
-This property allows you to create Docker links between multiple containers.
-  
-####docker::exec
+#####hostname
 
-#####`detach`
+Specifies the hostname inside the respective container. 
 
-If set to true, this will run the command in the background
+#####volumes
 
-#####`container`
+Mounts directories from the host filesystem inside the respective container. 
 
-The name of the container to run the specified command in
+#####links
 
-#####`command`
+Creates Docker links between multiple containers. 
 
-The command to run inside the container
+docker::exec
 
-#####`tty`
+#####detach
 
-Allocate a pseudo-TTY
+Specifies whether to run the command in the background. 
+
+#####container
+
+Specifies the name of the container in which to run the specified command. 
+
+#####command
+
+Specifies a command to run inside the container. 
+
+#####tty
+
+Allocates a pseudo-TTY.
 
 ## Limitations
 
@@ -467,18 +445,18 @@ Allocate a pseudo-TTY
 This module is currently supported on:
 
 * Ubuntu 14.04 x86_64
-* Red Hat Enterprise Linux 7.1 x86_64
+* RedHat Enterprise Linux 7.1 x86_64
 * CentOS 7.1 x86_64
 * Oracle Linux 7.1 x86_64
 * Scientific Linux 7.1 x86_64
 
 ### Known Issues
 
-Depending on the initial state of your OS, you may run into issues which may mean that Docker fails to start properly.
+Depending on the initial state of your OS, you might run into issues which prevent Docker from starting properly:
 
 #### Enterprise Linux 7
 
-EL7 (Red Hat/CentOS/Oracle/Scientific) requires at least version 1.02.93 of the device-mapper package to be installed in order for Docker's default configuration to work. This is only available on EL7.1+.
+EL7 (RedHat/CentOS/Oracle/Scientific) requires at least version 1.02.93 of the device-mapper package to be installed for Docker's default configuration to work. That version is only available on EL7.1+.
 
 You can install this package via Puppet using the following manifest:
 
@@ -488,12 +466,11 @@ package {'device-mapper':
 }
 ~~~
 
-Remember to add the appropriate metaparameters (`before` or `require`) for your environment to ensure that device-mapper is installed before the `docker` class is executed.
+To ensure that device-mapper is installed before the `docker` class is executed, use the `before` or `require` [metaparameters](https://docs.puppetlabs.com/references/latest/metaparameter.html).
 
-##Development
+## Development
+Puppet Labs modules on the Puppet Forge are open projects, and community contributions are essential for keeping them great. We can't access the huge number of platforms and myriad hardware, software, and deployment configurations that Puppet is intended to serve. We want to keep it as easy as possible to contribute changes so that our modules work in your environment. There are a few guidelines that we need contributors to follow so that we can have a chance of keeping on top of things.
 
-Puppet Labs modules on the Puppet Forge are open projects, and community contributions are essential for keeping them great. We can't access the huge number of platforms and myriad of hardware, software, and deployment configurations that Puppet is intended to serve.
+For more information, see our [module contribution guide.](https://docs.puppetlabs.com/forge/contributing.html)
 
-We want to keep it as easy as possible to contribute changes so that our modules work in your environment. There are a few guidelines that we need contributors to follow so that we can have a chance of keeping on top of things.
-
-You can read the complete module contribution guide [on the Puppet Labs wiki.](http://projects.puppetlabs.com/projects/module-site/wiki/Module_contributing)
+To see who's already involved, see the [list of contributors.](https://github.com/puppetlabs/puppetlabs-docker_platform/graphs/contributors)

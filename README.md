@@ -176,57 +176,57 @@ Build a cluster of hosts running Docker Swarm configured by Puppet.
 
 ####Class: docker
 
-Installs, configures, and manages your Docker installation.
+Installs, configures, and manages your Docker installation. All parameters are optional unless otherwise specified.
 
 #####`dm_basesize`
 
-*Optional.* Specifies a size for the base device, which limits the size of images and containers. Valid options: a string containing a size (e.g., '5G', '10G', '11G'). Default: '10G'. 
+Specifies a size for the base device, which limits the size of images and containers. Valid options: a string containing a size (e.g., '5G', '10G', '11G'). Default: '10G'. 
 
 #####`dm_blocksize`
 
-*Optional.* Specifies a custom blocksize for the thin pool. Default: '64K'.
+Specifies a custom blocksize for the thin pool. Valid options: a string containing a size (e.g., '5G', '10G', '11G'). Default: '64K'.
 
 Warning: **DO NOT** change this parameter after the lvm devices have been initialized.
 
 #####`dm_datadev`
 
-Specifies a custom blockdevice to handle data for the thin pool.
+Specifies a custom blockdevice to handle data for the thin pool. Accepts a string.
 
 #####`dm_fs`
 
-*Optional.* Specifies a filesystem for the base image. Valid options: 'xfs' and 'ext4'. Default: 'ext4'. 
+Specifies a filesystem for the base image. Valid options: 'xfs' and 'ext4'. Default: 'ext4'. 
 
 #####`dm_loopdatasize`
 
-*Optional.* Specifies the size of the loopback file for the "data" device used for the thin pool. Default: '2G'. 
+Specifies the size of the loopback file for the "data" device used for the thin pool. Valid options: a string containing a size (e.g., '5G', '10G', '11G').Default: '2G'. 
 
 #####`dm_loopmetadatasize`
 
-*Optional.* Specifies the size of the loopback file for the "metadata" device used for the thin pool. Default: '2G'.
+Specifies the size of the loopback file for the "metadata" device used for the thin pool. Valid options: a string containing a size (e.g., '5G', '10G', '11G'). Default: '2G'.
 
 #####`dm_metadatadev`
 
-Specifies a custom blockdevice to handle metadata for the thin pool.
+Specifies a custom blockdevice to handle metadata for the thin pool. Accepts a string.
 
 #####`dm_mkfsarg`
 
-Specifies extra mkfs arguments for creating the base device. 
+Specifies extra mkfs arguments for creating the base device. Accepts a string.
 
 #####`dm_mountopt`
 
-Specifies extra mount options for mounting thin devices. 
+Specifies extra mount options for mounting thin devices. Accepts a string.
 
 #####`dns`
 
-*Optional.* Specifies a DNS server for the Docker daemon to connect to. This is useful if DNS resolution isn't working properly in the container. Default: undefined. 
+Specifies a DNS server for the Docker daemon to connect to. This is useful if DNS resolution isn't working properly in the container. Accepts a valid IP address. Default: undefined. 
 
 #####`dns_search`
 
-*Optional.* Specifies one or more dns search domain for the Docker daemon to use. Default: undefined.
+Specifies one or more dns search domain for the Docker daemon to use. Accepts a string containing a domain. Default: undefined.
 
 #####`docker_command`
 
-Specifies a custom Docker command.
+Specifies a custom Docker command. Accepts a string. Default [varies by operating system](https://github.com/garethr/garethr-docker/blob/master/manifests/params.pp).
 
 #####`docker_users`
 
@@ -240,79 +240,79 @@ class { 'docker':
 
 #####`ensure`
 
-*Optional.* Specifies the desired state of the Docker package; passed to Puppet's native `package` type. Default: 'present'. 
+Specifies the desired state of the Docker package; passed to Puppet's native `package` type. Valid options: 'present', 'absent'. Default: 'present'. 
 
 #####`extra_parameters`
 
-*Optional.* Passes one or more extra parameters to the Docker daemon. Default: undefined.
+Passes one or more extra parameters to the Docker daemon. Accepts an array of strings. Default: undefined.
 
 #####`log_level`
 
-*Optional.* Sets the logging level. Valid options: 'debug', 'info', 'warn', 'error', and 'fatal'. Default: undef. If not specified, Docker uses 'info'. 
+Sets the logging level. Valid options: 'debug', 'info', 'warn', 'error', and 'fatal'. Default: undef. If not specified, Docker uses 'info'. 
 
 #####`manage_package`
 
-*Optional.* Specifies whether the docker module should manage the Docker package. If set to 'false', Puppet doesn't define or install the package. Useful if you want to use your own package. Valid options: 'true' and 'false'. Default: 'true'.
+Specifies whether the docker module should manage the Docker package. If set to 'false', Puppet doesn't define or install the package. Useful if you want to use your own package. Valid options: 'true' and 'false'. Default: 'true'.
 
 #####`no_proxy`
 
-Passes a value to the no_proxy variable in `/etc/sysconfig/docker` (on RedHat and CentOS) or `/etc/default/docker` (on Debian).
+Passes a value to the no_proxy variable in `/etc/sysconfig/docker` (on RedHat and CentOS) or `/etc/default/docker` (on Debian). Accepts a string containing a network range or domain name.
 
 #####`package_name`
 
-*Optional.* Specifies a custom Docker package. Valid options: a string containing the name of the package to manage.
+Specifies a custom Docker package. Valid options: a string containing the name of the package to manage.
 
 #####`package_source_location`
 
-Specifies the location of your upstream package source, if you're using one. Default: on Debian: 'https://get.docker.io/ubuntu'.
+*Required, except on Ubuntu.* Specifies the location of your upstream package source, if you're using one. Accepts a URL. Default on Ubuntu: 'https://get.docker.io/ubuntu'.
 
 #####`prerequired_packages`
 
-*Optional.* An array of additional packages that need to be installed to support Docker. Default: varies by operating system.
+An array of additional packages that need to be installed to support Docker. Accepts an array of one or more strings containing package names. Default: varies by operating system.
 
 #####`proxy`
 
-Passes a value to the http_proxy and https_proxy env variables in `/etc/sysconfig/docker` (on RedHat and CentOS) or `/etc/default/docker` (on Debian).
+Passes a value to the http_proxy and https_proxy env variables in `/etc/sysconfig/docker` (on RedHat and CentOS) or `/etc/default/docker` (on Debian). Accepts a string containing the URL to a proxy server.
 
 #####`root_dir`
 
-*Optional.* Specifies a custom root directory for Docker containers. Valid options: a string containing the path to a directory. Default: undefined.
+Specifies a custom root directory for Docker containers. Valid options: a string containing the path to a directory. Default: undefined.
 
 #####`selinux_enabled`
 
-*Optional.* Specifies whether to enable selinux support. Note: SELinux does not  presently support the BTRFS storage driver. Valid options: 'true' and 'false'. Default: 'false'.
+Specifies whether to enable selinux support. Note: SELinux does not  presently support the BTRFS storage driver. Valid options: 'true' and 'false'. Default: 'false'.
 
 #####`service_state`
 
-*Optional.* Specifies whether the Docker daemon should be running. Valid options: 'running' and 'stopped'. Default: 'running'. 
+Specifies whether the Docker daemon should be running. Valid options: 'running' and 'stopped'. Default: 'running'. 
 
 #####`service_enable`
 
-*Optional.* Specifies whether the Docker daemon should start up at boot. Valid options: 'true' and 'false'. Default: 'true'.
+Specifies whether the Docker daemon should start up at boot. Valid options: 'true' and 'false'. Default: 'true'.
 
 #####`service_name`
 
-*Optional.* Specifies a custom Docker service. Valid options: a string containing the name of the service to manage.
+Specifies a custom Docker service. Valid options: a string containing the name of the service to manage.
 
 #####`shell_values`
 
-Passes one or more shell values into init script config files.
+Passes one or more shell values into init script config files. Accepts an array of strings.
 
 #####`socket_bind`
 
-*Optional.* Specifies the Unix socket the Docker daemon should bind to. Default: if not specified, Docker uses `/var/run/docker.sock`.
+Specifies the Unix socket the Docker daemon should bind to. Accepts a string containing the path to a Unix socket. Default: if not specified, Docker uses `/var/run/docker.sock`.
 
 #####`socket_group`
 
-*Optional.* Specifies the group ownership of the Unix control socket. Valid options: a string containing a Unix user group. Default: undefined.
+Specifies the group ownership of the Unix control socket. Valid options: a string containing a Unix user group. Default: undefined.
 
 #####`storage_driver`
 
-*Optional.* Specifies a storage driver. Valid options: 'aufs', 'devicemapper', 'btrfs', 'overlayfs', and 'vfs'. Default: undef. If not specified, Docker chooses a driver automatically.
+Specifies a storage driver. Valid options: 'aufs', 'devicemapper', 'btrfs', 'overlayfs', and 'vfs'. Default: undef. If not specified, Docker chooses a driver automatically.
 
 #####`tcp_bind`
 
-*Optional.* Specifies the tcp socket the Docker daemon should bind to.
+Specifies the tcp socket the Docker daemon should bind to. Accepts a string containing a port number.
 
 #####`use_upstream_package_source`
 
@@ -320,7 +320,7 @@ Passes one or more shell values into init script config files.
 
 #####`version`
 
-*Optional.* Specify a version of Docker to use. Valid options: a string containing a version number or 'latest'. Default: '0.5.5'. 
+Specify a version of Docker to use. Valid options: a string containing a version number or 'latest'. Default: '0.5.5'. 
 
 ####Class: docker::images
 
@@ -332,117 +332,124 @@ This class lets you use Hiera for instance management. It accepts the same param
 
 ####Define: docker::image
 
+Parameters are optional, except where noted.
+
 #####`base`
 
 Pulls the base container image from the Docker Hub registry. This is equivalent to running `docker pull base`, which involves downloading a large binary. That can take awhile, so this define turns off the `exec` resource's default 5-minute timeout.
 
 #####`docker_dir`
 
-*Optional.* Adds images from a directory containing a Dockerfile with the `docker_dir` property. Cannot be used with the `docker_dir` parameter. Valid options: a string containing an absolute path to the directory.
+Adds images from a directory containing a Dockerfile with the `docker_dir` property. Cannot be used with the `docker_dir` parameter. Valid options: a string containing an absolute path to the directory.
 
 #####`docker_file`
 
-*Optional.* Optional. Adds images from a Dockerfile. Cannot be used with the `docker_dir` parameter. Valid options: a string containing an absolute path to the Dockerfile.
+Adds images from a Dockerfile. Cannot be used with the `docker_dir` parameter. Valid options: a string containing an absolute path to the Dockerfile.
 
 #####`ensure`
 
-*Optional.* Specifies whether the image should exist. Valid options: 'present' and 'absent'. Default: 'present'.
+Specifies whether the image should exist. Valid options: 'present' and 'absent'. Default: 'present'.
 
 #####`image_tag`
 
-*Optional.* Installs image tags. Equivalent to running `docker pull -t="precise" ubuntu`. 
+Installs image tags. Equivalent to running `docker pull -t="precise" ubuntu`. 
 
 ####Define: docker::run
 
+Parameters are optional, except where noted.
+
 #####`command`
 
-Specifies a command to run inside the container once it has been started.
+Specifies a command to run inside the container once it has been started. Valid options: a string.
 
 #####`cpuset`
 
-Binds the containers to a specific CPU core on the host.
+Binds the containers to a specific CPU core on the host. Valid options: a string containing a CPU core ID number. Default: undefined.
 
 #####`depends`
 
-Specifies containers that must be started before this one.
+Specifies containers that must be started before this one. Valid options: a string containing the name of another container.
 
 #####`dns`
 
-Specifies a DNS server for the Docker daemon to connect to. This is useful if DNS resolution isn't working properly in the container.
+Specifies a DNS server for the Docker daemon to connect to. This is useful if DNS resolution isn't working properly in the container. Valid options: a string containing an IP address.
 
 #####`env`
 
-Lets you set environment variables within the container.
+Lets you set environment variables within the container. Valid options: an array of strings containing `<key>=<value>` pairs. Default: undefined.
 
 #####`expose`
 
-Specifies whether the port(s) specified in the `ports` parameter should be available for incoming connections on the respective container from other Docker containers. 
+Specifies whether the port(s) specified in the `ports` parameter should be available for incoming connections on the respective container from other Docker containers. Valid options: an array of port numbers.
 
 #####`hostname`
 
-Specifies the hostname inside the respective container.
+Specifies the hostname inside the respective container. Accepts a valid hostname.
 
 #####`image`
 
-Specifies a Docker image on which to base this container. You can also include a specific tag (e.g., `ubuntu:latest`).
+Specifies a Docker image on which to base this container. You can also include a specific tag (e.g., `ubuntu:latest`). Valid options: a string containing the name of an image.
 
 #####`links`
 
-Creates Docker links between multiple containers.
+Creates Docker links between multiple containers. Valid options: a string containing the Docker linking syntax. For more information, see the Docker [linking system](https://docs.docker.com/userguide/dockerlinks/#connect-with-the-linking-system) documentation.
 
 #####`memory_limit`
 
-Specifies the memory limit for the container.
+Specifies the memory limit for the container. Valid options: a string containing a size (e.g., '5G', '10G', '11G').
 
 #####`ports`
 
-Binds one or more ports inside the container to a different port on the host. This lets you access a service running inside a container from outside of Docker.
+Binds one or more ports inside the container to a different port on the host. This lets you access a service running inside a container from outside of Docker. Valid options: an array of port numbers.
 
 #####`privileged`
 
-Specifies whether to make the containers a Docker "privileged container". For further details, see the [Docker documentation](https://docs.docker.com/reference/run/#runtime-privilege-linux-capabilities-and-lxc-configuration).
+Specifies whether to make the container a "privileged container". Valid options: 'true' and 'false'. For further details, see the [Docker documentation](https://docs.docker.com/reference/run/#runtime-privilege-linux-capabilities-and-lxc-configuration).
 
 #####`pull_on_start`
 
-*Optional.* Specifies whether to pull a fresh copy of the image from the upstream repository every time the container starts up. Valid options: 'true' and 'false'. Default: 'false'.
+Specifies whether to pull a fresh copy of the image from the upstream repository every time the container starts up. Valid options: 'true' and 'false'. Default: 'false'.
 
 #####`restart_service`
 
-Specifies whether to restart the containers if any other properties change. Valid options: 'true' and 'false'.
+Specifies whether to restart the containers if any other properties change. Valid options: 'true' and 'false'. 
 
 #####`running`
 
-Specifies whether the container should be running. Valid options: 'true' and 'false'. 
+Specifies whether the container should be running. Valid options: 'true' and 'false'. Default: 'true'.
 
 #####`username`
 
-Runs the Docker container as a paticular user on the host system.
+Runs the Docker container as a paticular user on the host system. Valid options: a string containing a username. Default: undefined.
 
 #####`volumes`
 
-Mounts directories from the host filesystem inside the respective container.
+Mounts directories from the host filesystem inside the respective container. Valid options: an array of strings, where each string comprises a path on the host system, a colon, and a mount location within the container. For example, 'root:/root/mnt:rw'.
 
 #####`volumes_from`
 
-Mounts a volume from another container on the current container. 
+Mounts a volume from another container on the current container. Valid values: a string or an array of strings, where each string contains the name of a source container. Default: undefined.
 
 ####Define: docker::exec
 
+Parameters are optional, except where noted.
+
 #####`command`
 
-Specifies a command to run inside the container.
+*Required* Specifies a command to run inside the container. Accepts a string.
 
 #####`container`
 
-Specifies the name of the container in which to run the specified command.
+*Required*. Specifies the name of the container in which to run the specified command. Accepts a string.
 
 #####`detach`
 
-Specifies whether to run the command in the background.
+Specifies whether to run the command in the background. Valid options: 'true', false'. Default: 'false'.
 
 #####`tty`
 
-Allocates a pseudo-TTY.
+Specifies whether to allocate a pseudo-TTY. Valid options: 'true', false'. Default: 'false'.
+
 
 ##Limitations
 
@@ -466,7 +473,7 @@ EL7 (RedHat/CentOS/Oracle/Scientific) requires at least version 1.02.93 of the d
 
 You can install this package via Puppet using the following manifest:
 
-~~~
+~~~puppet
 package {'device-mapper':
   ensure => latest,
 }

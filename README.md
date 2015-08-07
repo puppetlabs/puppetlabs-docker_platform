@@ -14,7 +14,7 @@
   * [Known Issues](#known-issues)
 6. [Development - Guide for contributing to the module](#development)
 
-##Overview 
+##Overview
 
 The Puppet docker_platform module installs, configures, and manages the [Docker](https://github.com/dotcloud/docker) daemon and Docker containers.
 
@@ -64,7 +64,7 @@ To install a Docker image, use the define [`docker::image`](#dockerimage):
 docker::image { 'base': }
 ~~~
 
-This is equivalent to running `docker pull base`. This downloads a large binary, so on first run, it can take a while. For that reason, this define turns off the default five-minute timeout for exec. 
+This is equivalent to running `docker pull base`. This downloads a large binary, so on first run, it can take a while. For that reason, this define turns off the default five-minute timeout for exec.
 
 ~~~
 docker::image { 'ubuntu':
@@ -113,6 +113,39 @@ docker::run_instance:
     command: '/bin/sh -c "while true; do echo hello world; sleep 1; done"'
 ~~~
 
+### Private registries
+
+By default images will be pushed and pulled from [The Docker Hub](https://hub.docker.com/).
+If you have your own private registry without authentication, you can fully qualify your image name.
+If your private registry requires authentication you may configure a registry using the following:
+
+~~~
+docker::registry { 'example.docker.io:5000':
+  username => 'user',
+  password => 'secret',
+  email    => 'user@example.com',
+}
+~~~
+
+You can logout of a registry if it is no longer required.
+
+~~~
+docker::registry { 'example.docker.io:5000':
+  ensure => 'absent',
+}
+~~~
+
+If using Hiera, there's a `docker::registry_auth` class you can configure,
+for example:
+
+~~~
+docker::registry_auth::registries:
+  'example.com:5000':
+    username: 'user1'
+    password: 'secret'
+    email: 'user1@example.io'
+~~~
+
 ### Exec
 
 You can also run arbitrary commands within the context of a running container:
@@ -139,7 +172,7 @@ docker::image { 'ubuntu':
 
 docker::run { 'test_1':
   image   => 'ubuntu',
-  command => 'init', 
+  command => 'init',
   require => Docker::Image['ubuntu'],
 }
 ~~~
@@ -180,7 +213,7 @@ Installs, configures, and manages your Docker installation. All parameters are o
 
 #####`dm_basesize`
 
-Specifies a size for the base device, which limits the size of images and containers. Valid options: a string containing a size (e.g., '5G', '10G', '11G'). Default: '10G'. 
+Specifies a size for the base device, which limits the size of images and containers. Valid options: a string containing a size (e.g., '5G', '10G', '11G'). Default: '10G'.
 
 #####`dm_blocksize`
 
@@ -194,11 +227,11 @@ Specifies a custom blockdevice to handle data for the thin pool. Accepts a strin
 
 #####`dm_fs`
 
-Specifies a filesystem for the base image. Valid options: 'xfs' and 'ext4'. Default: 'ext4'. 
+Specifies a filesystem for the base image. Valid options: 'xfs' and 'ext4'. Default: 'ext4'.
 
 #####`dm_loopdatasize`
 
-Specifies the size of the loopback file for the "data" device used for the thin pool. Valid options: a string containing a size (e.g., '5G', '10G', '11G').Default: '2G'. 
+Specifies the size of the loopback file for the "data" device used for the thin pool. Valid options: a string containing a size (e.g., '5G', '10G', '11G').Default: '2G'.
 
 #####`dm_loopmetadatasize`
 
@@ -218,7 +251,7 @@ Specifies extra mount options for mounting thin devices. Accepts a string.
 
 #####`dns`
 
-Specifies a DNS server for the Docker daemon to connect to. This is useful if DNS resolution isn't working properly in the container. Accepts a valid IP address. Default: undefined. 
+Specifies a DNS server for the Docker daemon to connect to. This is useful if DNS resolution isn't working properly in the container. Accepts a valid IP address. Default: undefined.
 
 #####`dns_search`
 
@@ -236,11 +269,11 @@ Valid options: an array of usernames formatted as strings. For example:
 class { 'docker':
   docker_users => [ 'user1', 'user2' ],
 }
-~~~ 
+~~~
 
 #####`ensure`
 
-Specifies the desired state of the Docker package; passed to Puppet's native `package` type. Valid options: 'present', 'absent'. Default: 'present'. 
+Specifies the desired state of the Docker package; passed to Puppet's native `package` type. Valid options: 'present', 'absent'. Default: 'present'.
 
 #####`extra_parameters`
 
@@ -248,7 +281,12 @@ Passes one or more extra parameters to the Docker daemon. Accepts an array of st
 
 #####`log_level`
 
-Sets the logging level. Valid options: 'debug', 'info', 'warn', 'error', and 'fatal'. Default: undef. If not specified, Docker uses 'info'. 
+Sets the logging level. Valid options: 'debug', 'info', 'warn', 'error', and 'fatal'. Default: undef. If not specified, Docker uses 'info'.
+
+#####`manage_epel`
+
+Specified whether or not to include the EPEL repositories if they are
+required to locate the docker package. Valid options: 'true' and 'false'. Default: 'true'.
 
 #####`manage_package`
 
@@ -316,11 +354,11 @@ Specifies the tcp socket the Docker daemon should bind to. Accepts a string cont
 
 #####`use_upstream_package_source`
 
-*Optional; applies to Ubuntu only.* Specifies whether the upstream package source should be used for installation. If you run your own package mirror, you can set this to 'false'. Valid options: 'true' and 'false'. Default: 'true'. 
+*Optional; applies to Ubuntu only.* Specifies whether the upstream package source should be used for installation. If you run your own package mirror, you can set this to 'false'. Valid options: 'true' and 'false'. Default: 'true'.
 
 #####`version`
 
-Specify a version of Docker to use. Valid options: a string containing a version number or 'latest'. Default: '0.5.5'. 
+Specify a version of Docker to use. Valid options: a string containing a version number or 'latest'. Default: '0.5.5'.
 
 ####Class: docker::images
 
@@ -352,11 +390,17 @@ Specifies whether the image should exist. Valid options: 'present' and 'absent'.
 
 #####`image_tag`
 
-Installs image tags. Equivalent to running `docker pull -t="precise" ubuntu`. 
+Installs image tags. Equivalent to running `docker pull -t="precise" ubuntu`.
 
 ####Define: docker::run
 
 Parameters are optional, except where noted.
+
+#####`before_stop`
+
+Provide a command to run whenever the service running the container
+recieves a stop command. Valid options: a string containing a shell
+command. Default: false.
 
 #####`command`
 
@@ -377,6 +421,10 @@ Specifies a DNS server for the Docker daemon to connect to. This is useful if DN
 #####`env`
 
 Lets you set environment variables within the container. Valid options: an array of strings containing `<key>=<value>` pairs. Default: undefined.
+
+#####`env_file`
+
+Lets you set environment variables within the container based on environment files. Valid options: an array of strings containing the path to the file. Default: undefined.
 
 #####`expose`
 
@@ -412,7 +460,7 @@ Specifies whether to pull a fresh copy of the image from the upstream repository
 
 #####`restart_service`
 
-Specifies whether to restart the containers if any other properties change. Valid options: 'true' and 'false'. 
+Specifies whether to restart the containers if any other properties change. Valid options: 'true' and 'false'.
 
 #####`running`
 
@@ -450,6 +498,26 @@ Specifies whether to run the command in the background. Valid options: 'true', f
 
 Specifies whether to allocate a pseudo-TTY. Valid options: 'true', false'. Default: 'false'.
 
+####Class: docker::registry
+
+#####`name`
+
+*Required* The full address of the private registry you would like to
+authenticate with.
+
+#####`username`
+
+*Required* The username of the user you would like to authenticate with
+the specified private registry.
+
+#####`password`
+
+*Required* The private registry password for the specified user.
+
+#####`email`
+
+*Required* The email address associated with the private registry
+account.
 
 ##Limitations
 

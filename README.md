@@ -68,7 +68,7 @@ This is equivalent to running `docker pull base`. This downloads a large binary,
 
 ~~~
 docker::image { 'ubuntu':
-  ensure      => 'present'
+  ensure      => 'present',
   image_tag   => 'precise',
   docker_file => '/tmp/Dockerfile',
 }

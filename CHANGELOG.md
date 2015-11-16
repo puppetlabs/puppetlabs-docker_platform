@@ -1,3 +1,11 @@
+## Supported Release 1.1.1
+###Summary
+
+A small documentation fix release for the `docker::run_instance` class. No functional changes.
+
+#### Bugfixes
+- Correct the hiera example of the `docker::run_instance` class.
+
 ##2015-08-07 - Supported Release 1.1.0
 ###Summary
 

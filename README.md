@@ -107,7 +107,7 @@ docker::run { 'helloworld':
 If using Hiera, there's a `docker::run_instance` class you can configure, for example:
 
 ~~~
-docker::run_instance:
+docker::run_instance::instance:
   helloworld:
     image: 'ubuntu:precise'
     command: '/bin/sh -c "while true; do echo hello world; sleep 1; done"'

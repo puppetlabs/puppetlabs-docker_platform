@@ -36,7 +36,10 @@ To install Docker on a node, include the class `docker`.
 include 'docker'
 ~~~
 
-By default, for CentOS/RHEL, this installs Docker from your operating system's repo. For Ubuntu, this installs Docker from the upstream Docker repository.
+[Docker](https://github.com/docker/docker) from the [official
+repository](http://docs.docker.com/installation/) or alternatively from
+[EPEL on RedHat](http://docs.docker.io/en/latest/installation/rhel/)
+based distributions.
 
 ## Usage
 
@@ -55,6 +58,32 @@ class {'docker':
 ~~~
 
 This example installs Docker version 0.5.5, binds the Docker daemon to a Unix socket and a tcp socket, provides the daemon with a dns server, and adds two users to the Docker group.
+
+Docker recently [launched new official
+repositories](http://blog.docker.com/2015/07/new-apt-and-yum-repos/#comment-247448)
+which are now the default for the module from version 5. If you want to
+stick with the old repositories you can do so with the following:
+
+```puppet
+class { 'docker':
+  package_name => 'lxc-docker',
+  package_source_location => 'https://get.docker.com/ubuntu',
+  package_key_source => 'https://get.docker.com/gpg',
+  package_key => '36A1D7869245C8950F966E92D8576A8BA88D21E',
+  package_release => 'docker',
+}
+```
+
+The module also now uses the upstream repositories by default for RHEL
+based distros, including Fedora. If you want to stick with the distro
+packages you should use the following:
+
+```puppet
+class { 'docker':
+  use_upstream_package_source => false,
+  package_name => 'docker',
+}
+```
 
 ### Images
 
@@ -249,6 +278,23 @@ Specifies extra mkfs arguments for creating the base device. Accepts a string.
 
 Specifies extra mount options for mounting thin devices. Accepts a string.
 
+#####`dm_thinpooldev
+
+Specifies a custom block storage device to use for the thin pool.
+
+#####`dm_use_deferred_removal`
+
+Enables use of deferred device removal if libdm and the kernel driver support the mechanism.
+
+#####`dm_blkdiscard`
+
+Enables or disables the use of blkdiscard when removing devicemapper devices.
+Defaults to false
+
+#####`dm_override_udev_sync_check`
+
+By default, the devicemapper backend attempts to synchronize with the udev device manager for the Linux kernel. This option allows disabling that synchronization, to continue even though the configuration may be buggy. Defaults to true
+
 #####`dns`
 
 Specifies a DNS server for the Docker daemon to connect to. This is useful if DNS resolution isn't working properly in the container. Accepts a valid IP address. Default: undefined.
@@ -354,11 +400,86 @@ Specifies the tcp socket the Docker daemon should bind to. Accepts a string cont
 
 #####`use_upstream_package_source`
 
-*Optional; applies to Ubuntu only.* Specifies whether the upstream package source should be used for installation. If you run your own package mirror, you can set this to 'false'. Valid options: 'true' and 'false'. Default: 'true'.
+Specifies whether the upstream package source should be used for installation. If you run your own package mirror, you can set this to 'false'. Valid options: 'true' and 'false'. Default: 'true'.
 
 #####`version`
 
 Specify a version of Docker to use. Valid options: a string containing a version number or 'latest'. Default: '0.5.5'.
+
+#####`log_driver`
+Set the log driver. Defaults to undef. Docker default is json-file.
+Valid values: none, json-file, syslog, journald, gelf, fluentd
+Valid values description:
+
+~~~
+     none     : Disables any logging for the container.
+                docker logs won't be available with this driver.
+     json-file: Default logging driver for Docker.
+                Writes JSON messages to file.
+     syslog   : Syslog logging driver for Docker.
+                Writes log messages to syslog.
+     journald : Journald logging driver for Docker.
+                Writes log messages to journald.
+     gelf     : Graylog Extended Log Format (GELF) logging driver for Docker.
+                Writes log messages to a GELF endpoint: Graylog or Logstash.
+     fluentd  : Fluentd logging driver for Docker.
+                Writes log messages to fluentd (forward input).
+~~~
+
+#####`log_opt`
+Set the log driver specific options. Defaults to undef. Valid values per log driver:
+
+~~~
+     none     : undef
+     json-file:
+                max-size=[0-9+][k|m|g]
+                max-file=[0-9+]
+     syslog   :
+                syslog-address=[tcp|udp]://host:port
+                syslog-address=unix://path
+                syslog-facility=daemon|kern|user|mail|auth|
+                                syslog|lpr|news|uucp|cron|
+                                authpriv|ftp|
+                                local0|local1|local2|local3|
+                                local4|local5|local6|local7
+                syslog-tag="some_tag"
+     journald : undef
+     gelf     :
+                gelf-address=udp://host:port
+                gelf-tag="some_tag"
+     fluentd  :
+                fluentd-address=host:port
+                fluentd-tag={{.ID}} - short container id (12 characters)|
+                            {{.FullID}} - full container id
+                            {{.Name}} - container name
+~~~
+
+#####`storage_devs`
+A quoted, space-separated list of devices to be used.
+
+#####`storage_vg`
+The volume group to use for docker storage.
+
+#####`storage_root_size`
+The size to which the root filesystem should be grown.
+
+#####`storage_data_size`
+The desired size for the docker data LV
+
+#####`storage_chunk_size`
+Controls the chunk size/block size of thin pool.
+
+#####`storage_growpart`
+Enable resizing partition table backing root volume group.
+
+#####`storage_auto_extend_pool`
+Enable/disable automatic pool extension using lvm
+
+#####`storage_pool_autoextend_threshold`
+Auto pool extension threshold (in % of pool size)
+
+#####`storage_pool_autoextend_percent`
+Extend the pool by specified percentage when threshold is hit.
 
 ####Class: docker::images
 
@@ -497,6 +618,11 @@ Specifies whether to run the command in the background. Valid options: 'true', f
 #####`tty`
 
 Specifies whether to allocate a pseudo-TTY. Valid options: 'true', false'. Default: 'false'.
+
+
+#####`unless`
+A command to run in the context of the container, only if it returns a
+non-zero exit code will the command in `command` be run.
 
 ####Class: docker::registry
 

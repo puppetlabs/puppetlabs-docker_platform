@@ -1,4 +1,4 @@
-##2015-12-18 - Supported Release 2.0
+##2015-12-18 - Supported Release 2.0.0
 
 Note that this is a major release and in particular changes the default
 repository behaviour so all supported operating systems use the new

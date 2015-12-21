@@ -254,7 +254,7 @@ Warning: **DO NOT** change this parameter after the lvm devices have been initia
 
 #####`dm_datadev`
 
-Specifies a custom blockdevice to handle data for the thin pool. Accepts a string.
+**Deprecated** This parameter is no longer in use, `dm_thinpooldev` should be used instead.
 
 #####`dm_fs`
 
@@ -270,7 +270,7 @@ Specifies the size of the loopback file for the "metadata" device used for the t
 
 #####`dm_metadatadev`
 
-Specifies a custom blockdevice to handle metadata for the thin pool. Accepts a string.
+**Deprecated** This parameter is no longer in use, `dm_thinpooldev` should be used instead.
 
 #####`dm_mkfsarg`
 
@@ -393,7 +393,7 @@ Specifies the group ownership of the Unix control socket. Valid options: a strin
 
 #####`storage_driver`
 
-Specifies a storage driver. Valid options: 'aufs', 'devicemapper', 'btrfs', 'overlayfs', and 'vfs'. Default: undef. If not specified, Docker chooses a driver automatically.
+Specifies a storage driver. Valid options: 'aufs', 'devicemapper', 'btrfs', 'overlay', and 'vfs'. Default: undef. If not specified, Docker chooses a driver automatically.
 
 #####`tcp_bind`
 

@@ -25,6 +25,7 @@ As well as fixes for:
 
 - Fix running=false to not start the docker image on docker restart
   under systemd
+- Fixed README to document correct Valid Options for `storage_driver`
 - Prevent timeouts for docker run
 - Ensure docker is running before attempting to use docker run
 - Obsfucate registry password from Puppet logs

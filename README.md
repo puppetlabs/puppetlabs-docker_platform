@@ -502,6 +502,9 @@ Adds images from a directory containing a Dockerfile with the `docker_dir` prope
 
 Adds images from a Dockerfile. Cannot be used with the `docker_dir` parameter. Valid options: a string containing an absolute path to the Dockerfile.
 
+#####`docker_tar`
+Adds images from a docker tar file.  Cannot be used with the `docker_dir` parameter. Valid options: a string containing an absolute path to the Docker tar file.  Note, a docker tar file is generated using the `docker save` command.
+
 #####`ensure`
 
 Specifies whether the image should exist. Valid options: 'present' and 'absent'. Default: 'present'.

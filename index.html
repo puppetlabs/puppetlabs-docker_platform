@@ -1,0 +1,475 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>
+  File: README
+  
+    &mdash; Documentation by YARD 0.8.7.6
+  
+</title>
+
+  <link rel="stylesheet" href="css/style.css" type="text/css" charset="utf-8" />
+
+  <link rel="stylesheet" href="css/common.css" type="text/css" charset="utf-8" />
+
+<script type="text/javascript" charset="utf-8">
+  hasFrames = window.top.frames.main ? true : false;
+  relpath = '';
+  framesUrl = "frames.html#!file.README.html";
+</script>
+
+
+  <script type="text/javascript" charset="utf-8" src="js/jquery.js"></script>
+
+  <script type="text/javascript" charset="utf-8" src="js/app.js"></script>
+
+
+  </head>
+  <body>
+    <div id="header">
+      <div id="menu">
+  
+    <a href="_index.html">Index</a> &raquo; 
+    <span class="title">File: README</span>
+  
+
+  <div class="noframes"><span class="title">(</span><a href="." target="_top">no frames</a><span class="title">)</span></div>
+</div>
+
+      <div id="search">
+  
+    <a class="full_list_link" id="puppet_manifest_list_link"
+        href="puppet_manifest_list.html">
+      Puppet Manifest List
+    </a>
+  
+    <a class="full_list_link" id="puppet_plugin_list_link"
+        href="puppet_plugin_list.html">
+      Puppet Plugin List
+    </a>
+  
+    <a class="full_list_link" id="puppet_type_list_link"
+        href="puppet_type_list.html">
+      Puppet Type List
+    </a>
+  
+    <a class="full_list_link" id="puppet_provider_list_link"
+        href="puppet_provider_list.html">
+      Puppet Provider List
+    </a>
+  
+    <a class="full_list_link" id="class_list_link"
+        href="class_list.html">
+      Class List
+    </a>
+  
+    <a class="full_list_link" id="method_list_link"
+        href="method_list.html">
+      Method List
+    </a>
+  
+    <a class="full_list_link" id="file_list_link"
+        href="file_list.html">
+      File List
+    </a>
+  
+</div>
+      <div class="clear"></div>
+    </div>
+
+    <iframe id="search_frame"></iframe>
+
+    <div id="content"><div id='filecontents'>
+<h1 id="label-docker_platform">docker_platform</h1>
+
+<h4 id="label-Table+of+Contents">Table of Contents</h4>
+<ol><li>
+<p><a href="#overview">Overview</a></p>
+</li><li>
+<p><a href="#module-description">Module Description - What the module does and
+why it is useful</a></p>
+</li><li>
+<p><a href="#setup">Setup - The basics of getting started with
+docker_platform</a></p>
+<ul><li>
+<p><a href="#setup-requirements">Setup requirements</a></p>
+</li><li>
+<p><a href="#beginning-with-docker-platform">Beginning with
+docker_platform</a>]</p>
+</li></ul>
+</li><li>
+<p><a href="#usage">Usage - Configuration options and additional
+functionality</a></p>
+</li><li>
+<p><a href="#limitations">Limitations - OS compatibility, etc.</a></p>
+<ul><li>
+<p><a href="#support">Support</a></p>
+</li><li>
+<p><a href="#known-issues">Known Issues</a></p>
+</li></ul>
+</li><li>
+<p><a href="#development">Development - Guide for contributing to the
+module</a></p>
+</li></ol>
+
+<h2 id="label-Overview">Overview</h2>
+
+<p>The Puppet docker_platform module installs, configures, and manages the <a
+href="https://github.com/dotcloud/docker">Docker</a> daemon and Docker
+containers.</p>
+
+<h2 id="label-Description">Description</h2>
+
+<p>This module lets you use Puppet to implement the Docker container system
+across a Puppet-managed infrastructure. It includes classes and defines to
+install the Docker daemon, manage images and containers across different
+nodesets, and run commands inside containers.</p>
+
+<h2 id="label-Setup">Setup</h2>
+
+<h3 id="label-Setup+requirements">Setup requirements</h3>
+
+<p>For Enterprise Linux 7 systems, a few issues might prevent Docker from
+starting properly. You can learn about these issues in the <a
+href="#known-issues">Known Issues</a> section below.</p>
+
+<h3 id="label-Beginning+with+docker_platform">Beginning with docker_platform</h3>
+
+<p>To install Docker on a node, include the class <code>docker</code>.</p>
+
+<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_include'>include</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>docker</span><span class='tstring_end'>&#39;</span></span></code></pre>
+
+<p>This installs <a href="https://github.com/docker/docker">Docker</a> from
+the <a href="http://docs.docker.com/installation/">official repository</a>
+or alternatively from <a
+href="http://docs.docker.io/en/latest/installation/rhel/">EPEL on
+RedHat</a> based distributions.</p>
+
+<h2 id="label-Usage">Usage</h2>
+
+<h3 id="label-Installing+Docker">Installing Docker</h3>
+
+<p>You can install Docker with various parameters specified for the <a
+href="#docker">docker</a> class:</p>
+
+<pre class="code ruby"><code class="ruby">class {&#39;docker&#39;:
+  tcp_bind     =&gt; &#39;tcp://127.0.0.1:4243&#39;,
+  socket_bind  =&gt; &#39;unix:///var/run/docker.sock&#39;,
+  version      =&gt; &#39;0.5.5&#39;,
+  dns          =&gt; &#39;8.8.8.8&#39;,
+  docker_users =&gt; [ &#39;user1&#39;, &#39;user2&#39; ],
+}
+</code></pre>
+
+<p>This example installs Docker version 0.5.5, binds the Docker daemon to a
+Unix socket and a tcp socket, provides the daemon with a dns server, and
+adds two users to the Docker group.</p>
+
+<p>Docker recently <a
+href="http://blog.docker.com/2015/07/new-apt-and-yum-repos/#comment-247448">launched
+new official repositories</a> which are now the default for the module from
+version 5. If you want to stick with the old repositories you can do so
+with the following:</p>
+
+<pre class="code ruby"><code class="ruby">class { &#39;docker&#39;:
+  package_name =&gt; &#39;lxc-docker&#39;,
+  package_source_location =&gt; &#39;https://get.docker.com/ubuntu&#39;,
+  package_key_source =&gt; &#39;https://get.docker.com/gpg&#39;,
+  package_key =&gt; &#39;36A1D7869245C8950F966E92D8576A8BA88D21E&#39;,
+  package_release =&gt; &#39;docker&#39;,
+}
+</code></pre>
+
+<p>The module also now uses the upstream repositories by default for RHEL
+based distros, including Fedora. If you want to stick with the distro
+packages you should use the following:</p>
+
+<pre class="code ruby"><code class="ruby">class { &#39;docker&#39;:
+  use_upstream_package_source =&gt; false,
+  package_name =&gt; &#39;docker&#39;,
+}
+</code></pre>
+
+<h3 id="label-Images">Images</h3>
+
+<p>To install a Docker image, use the define <a
+href="#dockerimage">docker::image</a>:</p>
+
+<pre class="code ruby"><code class="ruby">docker::image { &#39;base&#39;: }</code></pre>
+
+<p>This is equivalent to running <code>docker pull base</code>. This downloads
+a large binary, so on first run, it can take a while. For that reason, this
+define turns off the default five-minute timeout for exec.</p>
+
+<pre class="code ruby"><code class="ruby">docker::image { &#39;ubuntu&#39;:
+  ensure      =&gt; &#39;present&#39;,
+  image_tag   =&gt; &#39;precise&#39;,
+  docker_file =&gt; &#39;/tmp/Dockerfile&#39;,
+}
+</code></pre>
+
+<p>The above code adds an image from the listed Dockerfile. Alternatively, you
+can specify an image from a Docker directory, by using
+<code>docker_dir</code> parameter instead of <code>docker_file</code>.</p>
+
+<h3 id="label-Containers">Containers</h3>
+
+<p>Now that you have an image, you can run commands within a container managed
+by Docker:</p>
+
+<pre class="code ruby"><code class="ruby">docker::run { &#39;helloworld&#39;:
+  image   =&gt; &#39;base&#39;,
+  command =&gt; &#39;/bin/sh -c &quot;while true; do echo hello world; sleep 1; done&quot;&#39;,
+}
+</code></pre>
+
+<p>You can set ports, expose, env, dns, and volumes with either a single
+string or, as above, with an array of values.</p>
+
+<p>Specifying <code>pull_on_start</code> pulls the image before each time it
+is started.</p>
+
+<p>The <code>depends</code> option allows expressing containers that must be
+started before other containers start. This affects the generation of the
+init.d/systemd script.</p>
+
+<p>The service file created for systemd and upstart based systems enables
+automatic restarting of the service on failure by default.</p>
+
+<p>To use an image tag, append the tag name to the image name separated by a
+semicolon:</p>
+
+<pre class="code ruby"><code class="ruby">docker::run { &#39;helloworld&#39;:
+  image   =&gt; &#39;ubuntu:precise&#39;,
+  command =&gt; &#39;/bin/sh -c &quot;while true; do echo hello world; sleep 1; done&quot;&#39;,
+}
+</code></pre>
+
+<p>If using Hiera, there&#39;s a <code>docker::run_instance</code> class you
+can configure, for example:</p>
+
+<pre class="code ruby"><code class="ruby">docker::run_instance::instance:
+  helloworld:
+    image: &#39;ubuntu:precise&#39;
+    command: &#39;/bin/sh -c &quot;while true; do echo hello world; sleep 1; done&quot;&#39;</code></pre>
+
+<h3 id="label-Networks">Networks</h3>
+
+<p>As of Docker 1.9.x, Docker has official support for networks. The module
+now exposes a type, <code>docker_network</code>, used to manage those. This
+works like:</p>
+
+<pre class="code ruby"><code class="ruby">docker_network { &#39;my-net&#39;:
+  ensure   =&gt; present,
+  driver   =&gt; &#39;overlay&#39;,
+  subnet   =&gt; &#39;192.168.1.0/24&#39;,
+  gateway  =&gt; &#39;192.168.1.1&#39;,
+  ip_range =&gt; &#39;192.168.1.4/32&#39;,
+}
+</code></pre>
+
+<p>Only the name is required, along with an ensure value. If you don&#39;t
+pass a driver Docker network will use the default bridge. Note that some
+networks require the Docker daemon to be configured to use them, for
+instance for the overlay network you&#39;ll need a cluster store
+configured. You can do that on the <code>docker</code> class like so:</p>
+
+<pre class="code ruby"><code class="ruby">extra_parameters =&gt; &#39;--cluster-store=&lt;backend&gt;://172.17.8.101:&lt;port&gt;
+--cluster-advertise=&lt;interface&gt;:2376&#39;
+</code></pre>
+
+<h3 id="label-Compose">Compose</h3>
+
+<p>Docker Compose allows for describing a set of containers in a simple YAML
+format, and then running a command to build and run those containers. The
+<code>docker_compose</code> type included in the module allows for using
+Puppet to run Compose. This means you can have Puppet remediate any issues
+and make sure reality matches the model in your Compose file.</p>
+
+<p>Here&#39;s an example. Given the following Compose file:</p>
+
+<pre class="code ruby"><code class="ruby">compose_test:
+  image: ubuntu:14.04
+  command: /bin/sh -c &quot;while true; do echo hello world; sleep 1; done&quot;</code></pre>
+
+<p>That could be added to the machine you&#39;re running Puppet using a
+<code>file</code> resource or any other means.</p>
+
+<p>Then define a <code>docker_compose</code> resource pointing at the Compose
+file like so:</p>
+
+<pre class="code ruby"><code class="ruby">docker_compose { &#39;/tmp/docker-compose.yml&#39;:
+  ensure  =&gt; present,
+}
+</code></pre>
+
+<p>Now when Puppet runs it will automatically run Compose is required, for
+example because the relevant Compose services aren&#39;t running.</p>
+
+<p>You can also pass addition options (for example to enable experimental
+features) as well as provide scaling rules. The following example requests
+2 containers be running for example. Puppet will now run Compose if the
+number of containers for a given service don&#39;t match the provided scale
+values.</p>
+
+<pre class="code ruby"><code class="ruby">docker_compose { &#39;/tmp/docker-compose.yml&#39;:
+  ensure  =&gt; present,
+  scale   =&gt; {
+    &#39;compose_test&#39; =&gt; 2,
+  },
+  options =&gt; &#39;--x-networking&#39;
+}
+</code></pre>
+
+<h3 id="label-Private+registries">Private registries</h3>
+
+<p>By default images will be pushed and pulled from <a
+href="https://hub.docker.com/">The Docker Hub</a>. If you have your own
+private registry without authentication, you can fully qualify your image
+name. If your private registry requires authentication you may configure a
+registry using the following:</p>
+
+<pre class="code ruby"><code class="ruby">docker::registry { &#39;example.docker.io:5000&#39;:
+  username =&gt; &#39;user&#39;,
+  password =&gt; &#39;secret&#39;,
+  email    =&gt; &#39;user@example.com&#39;,
+}
+</code></pre>
+
+<p>You can logout of a registry if it is no longer required.</p>
+
+<pre class="code ruby"><code class="ruby">docker::registry { &#39;example.docker.io:5000&#39;:
+  ensure =&gt; &#39;absent&#39;,
+}
+</code></pre>
+
+<p>If using Hiera, there&#39;s a <code>docker::registry_auth</code> class you
+can configure, for example:</p>
+
+<pre class="code ruby"><code class="ruby">docker::registry_auth::registries:
+  &#39;example.com:5000&#39;:
+    username: &#39;user1&#39;
+    password: &#39;secret&#39;
+    email: &#39;user1@example.io&#39;</code></pre>
+
+<h3 id="label-Exec">Exec</h3>
+
+<p>You can also run arbitrary commands within the context of a running
+container:</p>
+
+<pre class="code ruby"><code class="ruby">docker::exec { &#39;helloworld-uptime&#39;:
+  detach    =&gt; true,
+  container =&gt; &#39;helloworld&#39;,
+  command   =&gt; &#39;uptime&#39;,
+  tty       =&gt; true,
+}
+</code></pre>
+
+<h3 id="label-Full+Basic+Example">Full Basic Example</h3>
+
+<p>To install Docker, download a Ubuntu image, and run a Ubuntu-based
+container that does nothing except run the init process, you can use the
+following example manifest:</p>
+
+<pre class="code ruby"><code class="ruby">class { &#39;docker&#39;:}
+
+docker::image { &#39;ubuntu&#39;:
+  require =&gt; Class[&#39;docker&#39;],
+}
+
+docker::run { &#39;test_1&#39;:
+  image   =&gt; &#39;ubuntu&#39;,
+  command =&gt; &#39;init&#39;,
+  require =&gt; Docker::Image[&#39;ubuntu&#39;],
+}
+</code></pre>
+
+<h2 id="label-Advanced+Community+Examples">Advanced Community Examples</h2>
+<ul><li>
+<p><a href="https://github.com/garethr/puppet-docker-vnext-example">Launch
+vNext app in Docker using Puppet</a></p>
+</li></ul>
+
+<p>This example contains a fairly simple example using Vagrant to launch a
+Linux virtual machine, then Puppet to install Docker, build an image and
+run a container. For added spice, the container runs a ASP.NET vNext
+application.</p>
+<ul><li>
+<p><a href="https://github.com/garethr/puppet-docker-example">Multihost
+containers connected with Consul</a></p>
+</li></ul>
+
+<p>Launch multiple containers and connect them together using Nginx, updated
+by Consul and Puppet.</p>
+<ul><li>
+<p><a href="https://github.com/garethr/puppet-docker-swarm-example">Configure
+Docker Swarm using Puppet</a></p>
+</li></ul>
+
+<p>Build a cluster of hosts running Docker Swarm configured by Puppet.</p>
+
+<h2 id="label-Limitations">Limitations</h2>
+
+<h3 id="label-Support">Support</h3>
+
+<p>This module is currently supported on:</p>
+<ul><li>
+<p>RedHat Enterprise Linux 7.1 x86_64</p>
+</li><li>
+<p>CentOS 7.1 x86_64</p>
+</li><li>
+<p>Oracle Linux 7.1 x86_64</p>
+</li><li>
+<p>Scientific Linux 7.1 x86_64</p>
+</li><li>
+<p>Ubuntu 14.04 x86_64</p>
+</li></ul>
+
+<h3 id="label-Known+Issues">Known Issues</h3>
+
+<p>Depending on the initial state of your OS, you might run into issues which
+prevent Docker from starting properly:</p>
+
+<h4 id="label-Enterprise+Linux+7">Enterprise Linux 7</h4>
+
+<p>EL7 (RedHat/CentOS/Oracle/Scientific) requires at least version 1.02.93 of
+the device-mapper package to be installed for Docker&#39;s default
+configuration to work. That version is only available on EL7.1+.</p>
+
+<p>You can install this package via Puppet using the following manifest:</p>
+
+<p>~~~puppet package {&#39;device-mapper&#39;:  ensure =&gt; latest, } ~~~</p>
+
+<p>To ensure that device-mapper is installed before the <code>docker</code>
+class is executed, use the <code>before</code> or <code>require</code> <a
+href="https://docs.puppetlabs.com/references/latest/metaparameter.html">metaparameters</a>.</p>
+
+<h2 id="label-Development">Development</h2>
+
+<p>Puppet Labs modules on the Puppet Forge are open projects, and community
+contributions are essential for keeping them great. We can&#39;t access the
+huge number of platforms and myriad hardware, software, and deployment
+configurations that Puppet is intended to serve. We want to keep it as easy
+as possible to contribute changes so that our modules work in your
+environment. There are a few guidelines that we need contributors to follow
+so that we can have a chance of keeping on top of things.</p>
+
+<p>For more information, see our <a
+href="https://docs.puppetlabs.com/forge/contributing.html">module
+contribution guide.</a></p>
+
+<p>To see who&#39;s already involved, see the <a
+href="https://github.com/puppetlabs/puppetlabs-docker_platform/graphs/contributors">list
+of contributors.</a></p>
+</div></div>
+
+    <div id="footer">
+  Generated on Thu Mar 31 12:27:53 2016 by
+  <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
+  0.8.7.6 (ruby-2.1.5).
+</div>
+
+  </body>
+</html>

@@ -1,0 +1,165 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>
+  Hostclass: docker::service
+  
+    &mdash; Documentation by YARD 0.8.7.6
+  
+</title>
+
+  <link rel="stylesheet" href="../css/style.css" type="text/css" charset="utf-8" />
+
+  <link rel="stylesheet" href="../css/common.css" type="text/css" charset="utf-8" />
+
+<script type="text/javascript" charset="utf-8">
+  hasFrames = window.top.frames.main ? true : false;
+  relpath = '../';
+  framesUrl = "../frames.html#!docker/service.html";
+</script>
+
+
+  <script type="text/javascript" charset="utf-8" src="../js/jquery.js"></script>
+
+  <script type="text/javascript" charset="utf-8" src="../js/app.js"></script>
+
+
+  </head>
+  <body>
+    <div id="header">
+      <div id="menu">
+  
+    <a href="../_index.html">Index (s)</a> &raquo;
+    <span class='title'><span class='object_link'><a href="../docker.html" title="docker (hostclass)">docker</a></span></span>
+     &raquo; 
+    <span class="title">service</span>
+  
+
+  <div class="noframes"><span class="title">(</span><a href="." target="_top">no frames</a><span class="title">)</span></div>
+</div>
+
+      <div id="search">
+  
+    <a class="full_list_link" id="puppet_manifest_list_link"
+        href="../puppet_manifest_list.html">
+      Puppet Manifest List
+    </a>
+  
+    <a class="full_list_link" id="puppet_plugin_list_link"
+        href="../puppet_plugin_list.html">
+      Puppet Plugin List
+    </a>
+  
+    <a class="full_list_link" id="puppet_type_list_link"
+        href="../puppet_type_list.html">
+      Puppet Type List
+    </a>
+  
+    <a class="full_list_link" id="puppet_provider_list_link"
+        href="../puppet_provider_list.html">
+      Puppet Provider List
+    </a>
+  
+    <a class="full_list_link" id="class_list_link"
+        href="../class_list.html">
+      Class List
+    </a>
+  
+    <a class="full_list_link" id="method_list_link"
+        href="../method_list.html">
+      Method List
+    </a>
+  
+    <a class="full_list_link" id="file_list_link"
+        href="../file_list.html">
+      File List
+    </a>
+  
+</div>
+      <div class="clear"></div>
+    </div>
+
+    <iframe id="search_frame"></iframe>
+
+    <div id="content"><div class='module_header'>
+  <h1>
+    Puppet Class: service
+  </h1>
+</div>
+
+<dl class="box">
+  
+  
+    <dt class="r1 last">Defined in:</dt>
+    <dd class="r1 last">manifests/service.pp</dd>
+  
+</dl>
+<div class="clear"></div>
+
+<h2>Overview</h2><div class="docstring">
+  <div class="discussion">
+    <p>
+<h2 id="label-Class%3A+docker%3A%3Aservice">Class: docker::service</h2>
+
+<p>Class to manage the docker service daemon</p>
+
+<h3 id="label-Parameters">Parameters</h3>
+<dl class="rdoc-list label-list"><dt><strong>tcp_bind</strong>
+<dd>
+<p>Which tcp port, if any, to bind the docker service to.</p>
+</dd><dt><strong>ip_forward</strong>
+<dd>
+<p>This flag interacts with the IP forwarding setting on  your host
+system&#39;s kernel</p>
+</dd><dt><strong>iptables</strong>
+<dd>
+<p>Enable Docker&#39;s addition of iptables rules</p>
+</dd><dt><strong>ip_masq</strong>
+<dd>
+<p>Enable IP masquerading for bridge&#39;s IP range.</p>
+</dd><dt><strong>socket_bind</strong>
+<dd>
+<p>Which local unix socket to bind the docker service to.</p>
+</dd><dt><strong>socket_group</strong>
+<dd>
+<p>Which local unix socket to bind the docker service to.</p>
+</dd><dt><strong>root_dir</strong>
+<dd>
+<p>Specify a non-standard root directory for docker.</p>
+</dd><dt><strong>extra_parameters</strong>
+<dd>
+<p>Plain additional parameters to pass to the docker daemon</p>
+</dd><dt><strong>shell_values</strong>
+<dd>
+<p>Array of shell values to pass into init script config files</p>
+</dd><dt><strong>manage_service</strong>
+<dd>
+<p>Specify whether the service should be managed. Valid values are
+&#39;true&#39;, &#39;false&#39;. Defaults to &#39;true&#39;.</p>
+</dd></dl>
+</p>
+  </div>
+</div>
+<div class="tags">
+  
+  
+  
+</div>
+<h2>Parameter Summary</h2>
+<div class="tags">
+  <ul class="param">
+    <li><span class="name">docker_command </span><span class="type">(<tt>Any</tt>)</span><tt> => $docker::docker_command</tt></li><li><span class="name">service_name </span><span class="type">(<tt>Any</tt>)</span><tt> => $docker::service_name</tt></li><li><span class="name">daemon_subcommand </span><span class="type">(<tt>Any</tt>)</span><tt> => $docker::daemon_subcommand</tt></li><li><span class="name">tcp_bind </span><span class="type">(<tt>Any</tt>)</span><tt> => $docker::tcp_bind</tt></li><li><span class="name">ip_forward </span><span class="type">(<tt>Any</tt>)</span><tt> => $docker::ip_forward</tt></li><li><span class="name">iptables </span><span class="type">(<tt>Any</tt>)</span><tt> => $docker::iptables</tt></li><li><span class="name">ip_masq </span><span class="type">(<tt>Any</tt>)</span><tt> => $docker::ip_masq</tt></li><li><span class="name">bridge </span><span class="type">(<tt>Any</tt>)</span><tt> => $docker::bridge</tt></li><li><span class="name">fixed_cidr </span><span class="type">(<tt>Any</tt>)</span><tt> => $docker::fixed_cidr</tt></li><li><span class="name">default_gateway </span><span class="type">(<tt>Any</tt>)</span><tt> => $docker::default_gateway</tt></li><li><span class="name">socket_bind </span><span class="type">(<tt>Any</tt>)</span><tt> => $docker::socket_bind</tt></li><li><span class="name">log_level </span><span class="type">(<tt>Any</tt>)</span><tt> => $docker::log_level</tt></li><li><span class="name">log_driver </span><span class="type">(<tt>Any</tt>)</span><tt> => $docker::log_driver</tt></li><li><span class="name">log_opt </span><span class="type">(<tt>Any</tt>)</span><tt> => $docker::log_opt</tt></li><li><span class="name">selinux_enabled </span><span class="type">(<tt>Any</tt>)</span><tt> => $docker::selinux_enabled</tt></li><li><span class="name">socket_group </span><span class="type">(<tt>Any</tt>)</span><tt> => $docker::socket_group</tt></li><li><span class="name">dns </span><span class="type">(<tt>Any</tt>)</span><tt> => $docker::dns</tt></li><li><span class="name">dns_search </span><span class="type">(<tt>Any</tt>)</span><tt> => $docker::dns_search</tt></li><li><span class="name">service_state </span><span class="type">(<tt>Any</tt>)</span><tt> => $docker::service_state</tt></li><li><span class="name">service_enable </span><span class="type">(<tt>Any</tt>)</span><tt> => $docker::service_enable</tt></li><li><span class="name">manage_service </span><span class="type">(<tt>Any</tt>)</span><tt> => $docker::manage_service</tt></li><li><span class="name">root_dir </span><span class="type">(<tt>Any</tt>)</span><tt> => $docker::root_dir</tt></li><li><span class="name">extra_parameters </span><span class="type">(<tt>Any</tt>)</span><tt> => $docker::extra_parameters</tt></li><li><span class="name">shell_values </span><span class="type">(<tt>Any</tt>)</span><tt> => $docker::shell_values</tt></li><li><span class="name">proxy </span><span class="type">(<tt>Any</tt>)</span><tt> => $docker::proxy</tt></li><li><span class="name">no_proxy </span><span class="type">(<tt>Any</tt>)</span><tt> => $docker::no_proxy</tt></li><li><span class="name">execdriver </span><span class="type">(<tt>Any</tt>)</span><tt> => $docker::execdriver</tt></li><li><span class="name">storage_driver </span><span class="type">(<tt>Any</tt>)</span><tt> => $docker::storage_driver</tt></li><li><span class="name">dm_basesize </span><span class="type">(<tt>Any</tt>)</span><tt> => $docker::dm_basesize</tt></li><li><span class="name">dm_fs </span><span class="type">(<tt>Any</tt>)</span><tt> => $docker::dm_fs</tt></li><li><span class="name">dm_mkfsarg </span><span class="type">(<tt>Any</tt>)</span><tt> => $docker::dm_mkfsarg</tt></li><li><span class="name">dm_mountopt </span><span class="type">(<tt>Any</tt>)</span><tt> => $docker::dm_mountopt</tt></li><li><span class="name">dm_blocksize </span><span class="type">(<tt>Any</tt>)</span><tt> => $docker::dm_blocksize</tt></li><li><span class="name">dm_loopdatasize </span><span class="type">(<tt>Any</tt>)</span><tt> => $docker::dm_loopdatasize</tt></li><li><span class="name">dm_loopmetadatasize </span><span class="type">(<tt>Any</tt>)</span><tt> => $docker::dm_loopmetadatasize</tt></li><li><span class="name">dm_datadev </span><span class="type">(<tt>Any</tt>)</span><tt> => $docker::dm_datadev</tt></li><li><span class="name">dm_metadatadev </span><span class="type">(<tt>Any</tt>)</span><tt> => $docker::dm_metadatadev</tt></li><li><span class="name">tmp_dir </span><span class="type">(<tt>Any</tt>)</span><tt> => $docker::tmp_dir</tt></li><li><span class="name">nowarn_kernel </span><span class="type">(<tt>Any</tt>)</span><tt> => $docker::nowarn_kernel</tt></li><li><span class="name">dm_thinpooldev </span><span class="type">(<tt>Any</tt>)</span><tt> => $docker::dm_thinpooldev</tt></li><li><span class="name">dm_use_deferred_removal </span><span class="type">(<tt>Any</tt>)</span><tt> => $docker::dm_use_deferred_removal</tt></li><li><span class="name">dm_use_deferred_deletion </span><span class="type">(<tt>Any</tt>)</span><tt> => $docker::dm_use_deferred_deletion</tt></li><li><span class="name">dm_blkdiscard </span><span class="type">(<tt>Any</tt>)</span><tt> => $docker::dm_blkdiscard</tt></li><li><span class="name">dm_override_udev_sync_check </span><span class="type">(<tt>Any</tt>)</span><tt> => $docker::dm_override_udev_sync_check</tt></li><li><span class="name">storage_devs </span><span class="type">(<tt>Any</tt>)</span><tt> => $docker::storage_devs</tt></li><li><span class="name">storage_vg </span><span class="type">(<tt>Any</tt>)</span><tt> => $docker::storage_vg</tt></li><li><span class="name">storage_root_size </span><span class="type">(<tt>Any</tt>)</span><tt> => $docker::storage_root_size</tt></li><li><span class="name">storage_data_size </span><span class="type">(<tt>Any</tt>)</span><tt> => $docker::storage_data_size</tt></li><li><span class="name">storage_min_data_size </span><span class="type">(<tt>Any</tt>)</span><tt> => $docker::storage_min_data_size</tt></li><li><span class="name">storage_chunk_size </span><span class="type">(<tt>Any</tt>)</span><tt> => $docker::storage_chunk_size</tt></li><li><span class="name">storage_growpart </span><span class="type">(<tt>Any</tt>)</span><tt> => $docker::storage_growpart</tt></li><li><span class="name">storage_auto_extend_pool </span><span class="type">(<tt>Any</tt>)</span><tt> => $docker::storage_auto_extend_pool</tt></li><li><span class="name">storage_pool_autoextend_threshold </span><span class="type">(<tt>Any</tt>)</span><tt> => $docker::storage_pool_autoextend_threshold</tt></li><li><span class="name">storage_pool_autoextend_percent </span><span class="type">(<tt>Any</tt>)</span><tt> => $docker::storage_pool_autoextend_percent</tt></li><li><span class="name">storage_config </span><span class="type">(<tt>Any</tt>)</span><tt> => $docker::storage_config</tt></li><li><span class="name">storage_config_template </span><span class="type">(<tt>Any</tt>)</span><tt> => $docker::storage_config_template</tt></li><li><span class="name">service_provider </span><span class="type">(<tt>Any</tt>)</span><tt> => $docker::service_provider</tt></li><li><span class="name">service_config </span><span class="type">(<tt>Any</tt>)</span><tt> => $docker::service_config</tt></li><li><span class="name">service_config_template </span><span class="type">(<tt>Any</tt>)</span><tt> => $docker::service_config_template</tt></li><li><span class="name">service_overrides_template </span><span class="type">(<tt>Any</tt>)</span><tt> => $docker::service_overrides_template</tt></li><li><span class="name">service_hasstatus </span><span class="type">(<tt>Any</tt>)</span><tt> => $docker::service_hasstatus</tt></li><li><span class="name">service_hasrestart </span><span class="type">(<tt>Any</tt>)</span><tt> => $docker::service_hasrestart</tt></li>
+  </ul>
+</div>
+</div>
+
+    <div id="footer">
+  Generated on Thu Mar 31 12:27:54 2016 by
+  <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
+  0.8.7.6 (ruby-2.1.5).
+</div>
+
+  </body>
+</html>

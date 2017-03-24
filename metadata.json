@@ -1,6 +1,6 @@
 {
   "name": "puppetlabs-docker_platform",
-  "version": "2.1.0",
+  "version": "2.2.0",
   "author": "Puppet Labs",
   "summary": "Installs, configures, and manages the Docker daemon and Docker containers.",
   "license": "Apache-2.0",
@@ -8,7 +8,7 @@
   "project_page": "https://github.com/puppetlabs/puppetlabs-docker_platform",
   "issues_url": "https://tickets.puppetlabs.com/browse/MODULES",
   "dependencies": [
-    {"name":"garethr/docker","version_requirement":"5.2.0"}
+    {"name":"garethr/docker","version_requirement":"5.3.0"}
   ],
   "data_provider": null,
   "operatingsystem_support": [
@@ -41,13 +41,15 @@
       "operatingsystemrelease": [
         "14.04"
       ]
+    },
+    {
+      "operatingsystem": "Ubuntu",
+      "operatingsystemrelease": [
+        "16.04"
+      ]
     }
   ],
   "requirements": [
-    {
-      "name": "pe",
-      "version_requirement": ">= 3.7.0 < 2016.1.0"
-    },
     {
       "name": "puppet",
       "version_requirement": ">= 3.0.0 < 5.0.0"

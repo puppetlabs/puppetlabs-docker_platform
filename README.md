@@ -1,6 +1,6 @@
-#docker_platform
+# docker_platform
 
-####Table of Contents
+#### Table of Contents
 
 1. [Overview](#overview)
 2. [Module Description - What the module does and why it is useful](#module-description)
@@ -14,21 +14,21 @@
     * [Known Issues](#known-issues)
 7. [Development - Guide for contributing to the module](#development)
 
-##Overview
+## Overview
 
 The Puppet docker_platform module installs, configures, and manages the [Docker](https://github.com/dotcloud/docker) daemon and Docker containers.
 
-##Description
+## Description
 
 This module lets you use Puppet to implement the Docker container system across a Puppet-managed infrastructure. It includes classes and defines to install the Docker daemon, manage images and containers across different nodesets, and run commands inside containers.
 
-##Setup
+## Setup
 
-###Setup requirements
+### Setup requirements
 
 For Enterprise Linux 7 systems, a few issues might prevent Docker from starting properly. You can learn about these issues in the [Known Issues](#known-issues) section below.
 
-###Beginning with docker_platform
+### Beginning with docker_platform
 
 To install Docker on a node, include the class `docker`.
 
@@ -43,7 +43,7 @@ based distributions.
 
 ## Usage
 
-###Installing Docker
+### Installing Docker
 
 You can install Docker with various parameters specified for the [`docker`](#docker) class:
 
@@ -295,7 +295,7 @@ Launch multiple containers and connect them together using Nginx, updated by Con
 
 Build a cluster of hosts running Docker Swarm configured by Puppet.
 
-##Reference
+## Reference
 
 [Full API reference
 documentation](http://puppetlabs.github.io/puppetlabs-docker_platform/)
@@ -312,9 +312,9 @@ puppet strings
 
 This should create a directory called `doc` with all the HTML files in.
 
-##Limitations
+## Limitations
 
-###Support
+### Support
 
 This module is currently supported on:
 
@@ -322,13 +322,13 @@ This module is currently supported on:
 * CentOS 7.1 x86_64
 * Oracle Linux 7.1 x86_64
 * Scientific Linux 7.1 x86_64
-* Ubuntu 14.04 x86_64
+* Ubuntu 14.04/16.04 x86_64
 
-###Known Issues
+### Known Issues
 
 Depending on the initial state of your OS, you might run into issues which prevent Docker from starting properly:
 
-####Enterprise Linux 7
+#### Enterprise Linux 7
 
 EL7 (RedHat/CentOS/Oracle/Scientific) requires at least version 1.02.93 of the device-mapper package to be installed for Docker's default configuration to work. That version is only available on EL7.1+.
 
@@ -342,7 +342,7 @@ package {'device-mapper':
 
 To ensure that device-mapper is installed before the `docker` class is executed, use the `before` or `require` [metaparameters](https://docs.puppetlabs.com/references/latest/metaparameter.html).
 
-##Development
+## Development
 Puppet Labs modules on the Puppet Forge are open projects, and community contributions are essential for keeping them great. We can't access the huge number of platforms and myriad hardware, software, and deployment configurations that Puppet is intended to serve. We want to keep it as easy as possible to contribute changes so that our modules work in your environment. There are a few guidelines that we need contributors to follow so that we can have a chance of keeping on top of things.
 
 For more information, see our [module contribution guide.](https://docs.puppetlabs.com/forge/contributing.html)

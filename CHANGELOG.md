@@ -1,4 +1,31 @@
-##2016-04-12 - Supported Release 2.1.0
+## 2016-04-12 - Supported Release 2.2.0
+
+Several minor improvements to the Docker Compose support including:
+
+* Support for v2 of the Compose file syntax
+* Support refreshing the docker_compose resource
+* The ability to pass an install_path for custom installations
+* Passing arguments to docker-compose up
+* Ensuring curl is available when using it to install Compose
+
+New parameters for docker::run including stop_wait_time to allow
+containers time to stop when killed
+
+New parameters for the docker class, including icc, storage_setup_file
+
+Support for the overlay2 storage driver and the splunk log driver.
+
+Improvements to management when not using the upstream repository,
+including doing less to manage potentially unneeded dependencies.
+
+Support multiple registry authentications on the same host.
+
+Fix an issue with using docker::run on Swarm.
+
+Fix a number of issues if running the module with strict variables
+enabled, and add this to the tested conbinations.
+
+## 2016-04-12 - Supported Release 2.1.0
 
 Note that changes in Docker 1.10 changed the flag used to start the
 docker daemon. If you are using a version of docker prior to 1.8 you
@@ -26,7 +53,7 @@ Fixes include:
   of Ubuntu and Debian
 * Fix issue with Amazon Linux support
 
-##2015-12-18 - Supported Release 2.0.0
+## 2015-12-18 - Supported Release 2.0.0
 
 Note that this is a major release and in particular changes the default
 repository behaviour so all supported operating systems use the new
@@ -58,15 +85,14 @@ As well as fixes for:
 - Ensure docker is running before attempting to use docker run
 - Obsfucate registry password from Puppet logs
 
-
-##2015-08-07 - Supported Release 1.1.0
-###Summary
+## 2015-08-07 - Supported Release 1.1.0
+### Summary
 
 A small feature release as well as a few minor fixes. Most of the new
 work simply makes existing types more configurable, with the exception
 of the new `docker::registry` type.
 
-####Features
+#### Features
 - Support for configuring docker private registries
 - Repository options can be specified for RHEL package provider using `repo_opt`
 - EPEL can now be disabled, for instance if you have your own Docker packages
@@ -78,24 +104,23 @@ of the new `docker::registry` type.
 - Resolve issue enabling selinux on RHEL7 under systemd
 - Change Docker repository from get.docker.io to get.docker.com
 
-##2015-07-28 - Supported Release 1.0.2
-###Summary
+## 2015-07-28 - Supported Release 1.0.2
+### Summary
 
 This release includes official support for Puppet 4.x and Puppet Enterprise 2015.2.x
 
-##2015-05-28 - Supported Release 1.0.1
-###Summary
+## 2015-05-28 - Supported Release 1.0.1
+### Summary
 
 This release includes a few updates to the README file, as well updates to the metadata file formatting.
 
-##2015-04-27 - Supported Release 1.0.0
-###Summary
+## 2015-04-27 - Supported Release 1.0.0
+### Summary
 
 The is the initial supported release of the puppetlabs-docker_platform module which is used to install, configure and manage the docker daemon, docker images and docker containers.
 
-####Features
-- Support for Ubuntu 14.04, Red Hat Enterprise Linux 7.1 and CentOS 7.1
+#### Features
+- Support for Ubuntu 14.04/16.04, Red Hat Enterprise Linux 7.1 and CentOS 7.1
 - Docker daemon installation and configuration
 - Docker image download and management
 - Docker container configuration and management
-

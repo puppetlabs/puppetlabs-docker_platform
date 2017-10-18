@@ -1,6 +1,6 @@
 {
   "name": "puppetlabs-docker_platform",
-  "version": "2.2.1",
+  "version": "999.999.999",
   "author": "Puppet Labs",
   "summary": "Installs, configures, and manages the Docker daemon and Docker containers.",
   "license": "Apache-2.0",

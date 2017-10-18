@@ -1,3 +1,6 @@
+## 2017-10-18 999.999.999
+Module Deprecated. Replaced by https://github.com/puppetlabs/puppetlabs-docker.
+
 ## 2016-04-12 - Supported Release 2.2.0
 
 Several minor improvements to the Docker Compose support including:
